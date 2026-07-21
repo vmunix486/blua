@@ -1,26 +1,45 @@
--- A simple bouncer program
+-- A simple bouncer program in Lua
 
-local function main()
-	screenWidth = 800
-	screenHeight = 600
+local screenWidth = 800
+local screenHeight = 600
 
-	raylib.InitWindow(screenWidth, screenHeight, "raybouncer")
-	raylib.SetTargetFPS(60)
+raylib.InitWindow(screenWidth, screenHeight, "luabouncer")
+raylib.SetTargetFPS(60)
 
-	pos = { 100, 100 }
-	speed = { 1, 1 }
-	size = { 20, 20 }
+local posx = 100
+local posy = 100
 
+local speedx = 1
+local speedy = 1
+
+local size = 20
+
+while not raylib.WindowShouldClose() do
 	raylib.BeginDrawing()
-	raylib.ClearBackground(RAYWHITE)
+		raylib.ClearBackground(BLACK)
 
-	while not raylib.WindowShouldClose() do
+		posx = posx + speedx
+		posy = posy + speedy
 
-		--pos[1] = pos[1] + speed[1]
-		--pos[2] = pos[2] + speed[2]
+		raylib.DrawRectangle(posx, posy, size, size, RAYWHITE)
 
-		--raylib.DrawRectangle(pos[1], pos[2], size[1], size[2], RED)
-	end
+		if posy > screenHeight - size then
+			speedy = -1
+		end
+
+		if posx > screenWidth - size then
+			speedx = -1
+		end
+
+		if posy < 0 then
+			speedy = 1
+		end
+
+		if posx < 0 then
+			speedx = 1
+		end
+
+	raylib.EndDrawing()
 end
 
-main()
+raylib.CloseWindow()

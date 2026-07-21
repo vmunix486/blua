@@ -212,6 +212,15 @@ static int l_SetTargetFPS(lua_State *L) {
 
 /* ====== rshapes ======= */
 
+static int l_DrawRectangle(lua_State *L) {
+	int posx = luaL_checkinteger(L, 1);
+	int posy = luaL_checkinteger(L, 2);
+	int width = luaL_checkinteger(L, 3);
+	int height = luaL_checkinteger(L, 4);
+	Color color = checkColor(L, 5);
+	DrawRectangle(posx, posy, width, height, color);
+	return 0;
+}
 
 /* ====== rtext ====== */
 
@@ -249,6 +258,9 @@ static const luaL_Reg raylib_funcs[] = {
 
 	/* Timing funcs */
 	{"SetTargetFPS", l_SetTargetFPS},
+
+	/* Shapes */
+	{"DrawRectangle", l_DrawRectangle},
 
 	/* Text */
 	{"DrawText", l_DrawText},
