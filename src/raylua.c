@@ -220,6 +220,14 @@ static void registerKeys(lua_State *L) {
 	registerKey(L, KEY_MENU);
 	registerKey(L, KEY_VOLUME_UP);
 	registerKey(L, KEY_VOLUME_DOWN);
+
+	registerKey(L, MOUSE_BUTTON_LEFT);
+	registerKey(L, MOUSE_BUTTON_RIGHT);
+	registerKey(L, MOUSE_BUTTON_MIDDLE);
+	registerKey(L, MOUSE_BUTTON_SIDE);
+	registerKey(L, MOUSE_BUTTON_EXTRA);
+	registerKey(L, MOUSE_BUTTON_FORWARD);
+	registerKey(L, MOUSE_BUTTON_BACK);
 }
 
 /* ====== rcore ====== */
@@ -295,6 +303,25 @@ static int l_ClearWindowState(lua_State *L) {
 }
 
 /*
+ *	Cursor-related functions
+*/
+static int l_ShowCursor() {
+	ShowCursor();
+	return 0;
+}
+
+static int l_HideCursor() {
+	HideCursor();
+	return 0;
+}
+
+static int l_IsCursorHidden(lua_State *L) {
+        lua_pushboolean(L, IsCursorHidden());
+	return 1;
+}
+
+
+/*
  *	Drawing-related functions
 */
 static int l_ClearBackground(lua_State *L) {
@@ -327,12 +354,34 @@ static int l_SetTargetFPS(lua_State *L) {
  * Input Handline functions
 */
 
+static int l_IsKeyPressed(lua_State *L) {
+	int key = luaL_checkinteger(L, 1);
+	lua_pushboolean(L, IsKeyPressed(key));
+	return 1;
+}
+
 static int l_IsKeyDown(lua_State *L) {
 	int key = luaL_checkinteger(L, 1);
 	lua_pushboolean(L, IsKeyDown(key));
 	return 1;
 }
 
+
+static int l_GetMouseX(lua_State *L) {
+	lua_pushinteger(L, GetMouseX());
+	return 1;
+}
+
+static int l_GetMouseY(lua_State *L) {
+	lua_pushinteger(L, GetMouseY());
+	return 1;
+}
+
+static int l_IsMouseButtonPressed(lua_State *L) {
+	int button = luaL_checkinteger(L, 1);
+	lua_pushboolean(L, IsMouseButtonPressed(button));
+	return 1;
+}
 
 /* ====== rshapes ======= */
 
@@ -384,6 +433,11 @@ static const luaL_Reg raylib_funcs[] = {
 	{"SetWindowState", l_SetWindowState},
 	{"ClearWindowState", l_ClearWindowState},
 
+	/* Cursor funcs */
+	{"ShowCursor", l_ShowCursor},
+	{"HideCursor", l_HideCursor},
+	{"IsCursorHidden", l_IsCursorHidden},
+
 	/* Drawing funcs */
 	{"ClearBackground", l_ClearBackground},
 	{"BeginDrawing", l_BeginDrawing},
@@ -393,7 +447,11 @@ static const luaL_Reg raylib_funcs[] = {
 	{"SetTargetFPS", l_SetTargetFPS},
 
 	/* Input funcs */
+	{"IsKeyPressed", l_IsKeyPressed},
 	{"IsKeyDown", l_IsKeyDown},
+	{"GetMouseX", l_GetMouseX},
+	{"GetMouseY", l_GetMouseY},
+	{"IsMouseButtonPressed", l_IsMouseButtonPressed},
 
 	/* Shapes */
 	{"DrawCircle", l_DrawCircle},
