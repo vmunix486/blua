@@ -107,6 +107,121 @@ static void registerColors(lua_State *L) {
 	}
 }
 
+#define registerKey(L, k) lua_pushinteger(L, k); lua_setglobal(L, #k)
+
+static void registerKeys(lua_State *L) {
+	registerKey(L, KEY_NULL);
+	registerKey(L, KEY_APOSTROPHE);
+	registerKey(L, KEY_COMMA);
+	registerKey(L, KEY_MINUS);
+	registerKey(L, KEY_PERIOD);
+	registerKey(L, KEY_SLASH);
+	registerKey(L, KEY_ZERO);
+	registerKey(L, KEY_ONE);
+	registerKey(L, KEY_TWO);
+	registerKey(L, KEY_THREE);
+	registerKey(L, KEY_FOUR);
+	registerKey(L, KEY_FIVE);
+	registerKey(L, KEY_SIX);
+	registerKey(L, KEY_SEVEN);
+	registerKey(L, KEY_EIGHT);
+	registerKey(L, KEY_NINE);
+	registerKey(L, KEY_SEMICOLON);
+	registerKey(L, KEY_EQUAL);
+	registerKey(L, KEY_A);
+	registerKey(L, KEY_B);
+	registerKey(L, KEY_C);
+	registerKey(L, KEY_D);
+	registerKey(L, KEY_E);
+	registerKey(L, KEY_F);
+	registerKey(L, KEY_G);
+	registerKey(L, KEY_H);
+	registerKey(L, KEY_I);
+	registerKey(L, KEY_J);
+	registerKey(L, KEY_K);
+	registerKey(L, KEY_L);
+	registerKey(L, KEY_M);
+	registerKey(L, KEY_N);
+	registerKey(L, KEY_O);
+	registerKey(L, KEY_P);
+	registerKey(L, KEY_Q);
+	registerKey(L, KEY_R);
+	registerKey(L, KEY_S);
+	registerKey(L, KEY_T);
+	registerKey(L, KEY_U);
+	registerKey(L, KEY_V);
+	registerKey(L, KEY_W);
+	registerKey(L, KEY_X);
+	registerKey(L, KEY_Y);
+	registerKey(L, KEY_Z);
+	registerKey(L, KEY_LEFT_BRACKET);
+	registerKey(L, KEY_BACKSLASH);
+	registerKey(L, KEY_RIGHT_BRACKET);
+	registerKey(L, KEY_GRAVE);
+	registerKey(L, KEY_SPACE);
+	registerKey(L, KEY_ESCAPE);
+	registerKey(L, KEY_ENTER);
+	registerKey(L, KEY_TAB);
+	registerKey(L, KEY_BACKSPACE);
+	registerKey(L, KEY_INSERT);
+	registerKey(L, KEY_DELETE);
+	registerKey(L, KEY_RIGHT);
+	registerKey(L, KEY_LEFT);
+	registerKey(L, KEY_DOWN);
+	registerKey(L, KEY_UP);
+	registerKey(L, KEY_PAGE_UP);
+	registerKey(L, KEY_PAGE_DOWN);
+	registerKey(L, KEY_HOME);
+	registerKey(L, KEY_END);
+	registerKey(L, KEY_CAPS_LOCK);
+	registerKey(L, KEY_SCROLL_LOCK);
+	registerKey(L, KEY_NUM_LOCK);
+	registerKey(L, KEY_PRINT_SCREEN);
+	registerKey(L, KEY_PAUSE);
+	registerKey(L, KEY_F1);
+	registerKey(L, KEY_F2);
+	registerKey(L, KEY_F3);
+	registerKey(L, KEY_F4);
+	registerKey(L, KEY_F5);
+	registerKey(L, KEY_F6);
+	registerKey(L, KEY_F7);
+	registerKey(L, KEY_F8);
+	registerKey(L, KEY_F9);
+	registerKey(L, KEY_F10);
+	registerKey(L, KEY_F11);
+	registerKey(L, KEY_F12);
+	registerKey(L, KEY_LEFT_SHIFT);
+	registerKey(L, KEY_LEFT_CONTROL);
+	registerKey(L, KEY_LEFT_ALT);
+	registerKey(L, KEY_LEFT_SUPER);
+	registerKey(L, KEY_RIGHT_SHIFT);
+	registerKey(L, KEY_RIGHT_CONTROL);
+	registerKey(L, KEY_RIGHT_ALT);
+	registerKey(L, KEY_RIGHT_SUPER);
+	registerKey(L, KEY_KB_MENU);
+	registerKey(L, KEY_KP_0);
+	registerKey(L, KEY_KP_1);
+	registerKey(L, KEY_KP_2);
+	registerKey(L, KEY_KP_3);
+	registerKey(L, KEY_KP_4);
+	registerKey(L, KEY_KP_5);
+	registerKey(L, KEY_KP_6);
+	registerKey(L, KEY_KP_7);
+	registerKey(L, KEY_KP_8);
+	registerKey(L, KEY_KP_9);
+	registerKey(L, KEY_KP_DECIMAL);
+	registerKey(L, KEY_KP_DIVIDE);
+	registerKey(L, KEY_KP_MULTIPLY);
+	registerKey(L, KEY_KP_SUBTRACT);
+	registerKey(L, KEY_KP_ADD);
+	registerKey(L, KEY_KP_ENTER);
+	registerKey(L, KEY_KP_EQUAL);
+	registerKey(L, KEY_BACK);
+	registerKey(L, KEY_MENU);
+	registerKey(L, KEY_VOLUME_UP);
+	registerKey(L, KEY_VOLUME_DOWN);
+}
+
 /* ====== rcore ====== */
 static int l_InitWindow(lua_State *L) {
 	int width = luaL_checkinteger(L, 1);
@@ -208,9 +323,27 @@ static int l_SetTargetFPS(lua_State *L) {
 	return 0;
 }
 
+/* 
+ * Input Handline functions
+*/
+
+static int l_IsKeyDown(lua_State *L) {
+	int key = luaL_checkinteger(L, 1);
+	lua_pushboolean(L, IsKeyDown(key));
+	return 1;
+}
 
 
 /* ====== rshapes ======= */
+
+static int l_DrawCircle(lua_State *L) {
+	int centerX = luaL_checkinteger(L, 1);
+	int centerY = luaL_checkinteger(L, 2);
+	float radius = luaL_checkinteger(L, 3);
+	Color color = checkColor(L, 4);
+	DrawCircle(centerX, centerY, radius, color);
+	return 0;
+}
 
 static int l_DrawRectangle(lua_State *L) {
 	int posx = luaL_checkinteger(L, 1);
@@ -259,7 +392,11 @@ static const luaL_Reg raylib_funcs[] = {
 	/* Timing funcs */
 	{"SetTargetFPS", l_SetTargetFPS},
 
+	/* Input funcs */
+	{"IsKeyDown", l_IsKeyDown},
+
 	/* Shapes */
+	{"DrawCircle", l_DrawCircle},
 	{"DrawRectangle", l_DrawRectangle},
 
 	/* Text */
@@ -273,6 +410,7 @@ static const luaL_Reg raylib_funcs[] = {
 /* ====== Module Initialization ====== */
 void luaopen_raylib (lua_State *L) {
 	registerColors(L);
+	registerKeys(L);
 	luaL_newlib(L, raylib_funcs);
 	lua_setglobal(L, "raylib");
 }
