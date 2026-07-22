@@ -59,6 +59,18 @@ static Color checkColor(lua_State *L, int idx) {
 	return c;
 }
 
+static Vector2 checkVector2(lua_State *L, int idx) {
+	Vector2 v = {0, 0};
+	if (!lua_istable(L, idx))
+		luaL_argerror(L, idx, "expected {x, y} vector table");
+	lua_rawgeti(L, idx, 1);
+	lua_rawgeti(L, idx, 2);
+	v.x = (float)lua_tonumber(L, -2);
+	v.y = (float)lua_tonumber(L, -1);
+	lua_pop(L, 2);
+	return v;
+}
+
 static void pushColor(lua_State *L, Color c) {
 	lua_createtable(L, 4, 0);
 	lua_pushinteger(L, c.r);
@@ -385,12 +397,68 @@ static int l_IsMouseButtonPressed(lua_State *L) {
 
 /* ====== rshapes ======= */
 
+static int l_DrawLine(lua_State *L) {
+	int startPosX = luaL_checkinteger(L, 1);
+	int startPosY = luaL_checkinteger(L, 2);
+	int endPosX = luaL_checkinteger(L, 3);
+	int endPosY = luaL_checkinteger(L, 4);
+	Color color = checkColor(L, 5);
+	DrawLine(startPosX, startPosY, endPosX, endPosY, color);
+	return 0;
+}
+
 static int l_DrawCircle(lua_State *L) {
 	int centerX = luaL_checkinteger(L, 1);
 	int centerY = luaL_checkinteger(L, 2);
-	float radius = luaL_checkinteger(L, 3);
+	float radius = (float)luaL_checknumber(L, 3);
 	Color color = checkColor(L, 4);
 	DrawCircle(centerX, centerY, radius, color);
+	return 0;
+}
+
+static int l_DrawCircleV(lua_State *L) {
+	Vector2 center = checkVector2(L, 1);
+	float radius = (float)luaL_checknumber(L, 2);
+	Color color = checkColor(L, 3);
+	DrawCircleV(center, radius, color);
+	return 0;
+}
+
+static int l_DrawCircleGradient(lua_State *L) {
+	Vector2 center = checkVector2(L, 1);
+	float radius = (float)luaL_checknumber(L, 2);
+	Color inner = checkColor(L, 3);
+	Color outer = checkColor(L, 4);
+	DrawCircleGradient(center, radius, inner, outer);
+	return 0;
+}
+
+static int l_DrawCircleLines(lua_State *L) {
+	int centerX = luaL_checkinteger(L, 1);
+	int centerY = luaL_checkinteger(L, 2);
+	float radius = (float)luaL_checknumber(L, 3);
+	Color color = checkColor(L, 4);
+	DrawCircleLines(centerX, centerY, radius, color);
+	return 0;
+}
+
+static int l_DrawEllipse(lua_State *L) {
+	int centerX = luaL_checkinteger(L, 1);
+	int centerY = luaL_checkinteger(L, 2);
+	float radiusH = (float)luaL_checknumber(L, 3);
+	float radiusV = (float)luaL_checknumber(L, 4);
+	Color color = checkColor(L, 5);
+	DrawEllipse(centerX, centerY, radiusH, radiusV, color);
+	return 0;
+}
+
+static int l_DrawEllipseLines(lua_State *L) {
+	int centerX = luaL_checkinteger(L, 1);
+	int centerY = luaL_checkinteger(L, 2);
+	float radiusH = (float)luaL_checknumber(L, 3);
+	float radiusV = (float)luaL_checknumber(L, 4);
+	Color color = checkColor(L, 5);
+	DrawEllipseLines(centerX, centerY, radiusH, radiusV, color);
 	return 0;
 }
 
@@ -401,6 +469,87 @@ static int l_DrawRectangle(lua_State *L) {
 	int height = luaL_checkinteger(L, 4);
 	Color color = checkColor(L, 5);
 	DrawRectangle(posx, posy, width, height, color);
+	return 0;
+}
+
+static int l_DrawRectangleGradientV(lua_State *L) {
+	int posx = luaL_checkinteger(L, 1);
+	int posy = luaL_checkinteger(L, 2);
+	int width = luaL_checkinteger(L, 3);
+	int height = luaL_checkinteger(L, 4);
+	Color top = checkColor(L, 5);
+	Color bottom = checkColor(L, 6);
+	DrawRectangleGradientV(posx, posy, width, height, top, bottom);
+	return 0;
+}
+
+static int l_DrawRectangleGradientH(lua_State *L) {
+	int posx = luaL_checkinteger(L, 1);
+	int posy = luaL_checkinteger(L, 2);
+	int width = luaL_checkinteger(L, 3);
+	int height = luaL_checkinteger(L, 4);
+	Color left = checkColor(L, 5);
+	Color right = checkColor(L, 6);
+	DrawRectangleGradientH(posx, posy, width, height, left, right);
+	return 0;
+}
+
+static int l_DrawRectangleLines(lua_State *L) {
+	int posx = luaL_checkinteger(L, 1);
+	int posy = luaL_checkinteger(L, 2);
+	int width = luaL_checkinteger(L, 3);
+	int height = luaL_checkinteger(L, 4);
+	Color color = checkColor(L, 5);
+	DrawRectangleLines(posx, posy, width, height, color);
+	return 0;
+}
+
+static int l_DrawTriangle(lua_State *L) {
+	Vector2 v1 = checkVector2(L, 1);
+	Vector2 v2 = checkVector2(L, 2);
+	Vector2 v3 = checkVector2(L, 3);
+	Color color = checkColor(L, 4);
+	DrawTriangle(v1, v2, v3, color);
+	return 0;
+}
+
+static int l_DrawTriangleLines(lua_State *L) {
+	Vector2 v1 = checkVector2(L, 1);
+	Vector2 v2 = checkVector2(L, 2);
+	Vector2 v3 = checkVector2(L, 3);
+	Color color = checkColor(L, 4);
+	DrawTriangleLines(v1, v2, v3, color);
+	return 0;
+}
+
+static int l_DrawPoly(lua_State *L) {
+	Vector2 center = checkVector2(L, 1);
+	int sides = luaL_checkinteger(L, 2);
+	float radius = (float)luaL_checknumber(L, 3);
+	float rotation = (float)luaL_checknumber(L, 4);
+	Color color = checkColor(L, 5);
+	DrawPoly(center, sides, radius, rotation, color);
+	return 0;
+}
+
+static int l_DrawPolyLines(lua_State *L) {
+	Vector2 center = checkVector2(L, 1);
+	int sides = luaL_checkinteger(L, 2);
+	float radius = (float)luaL_checknumber(L, 3);
+	float rotation = (float)luaL_checknumber(L, 4);
+	Color color = checkColor(L, 5);
+	DrawPolyLines(center, sides, radius, rotation, color);
+	return 0;
+}
+
+static int l_DrawPolyLinesEx(lua_State *L) {
+	Vector2 center = checkVector2(L, 1);
+	int sides = luaL_checkinteger(L, 2);
+	float radius = (float)luaL_checknumber(L, 3);
+	float rotation = (float)luaL_checknumber(L, 4);
+	float lineThick = (float)luaL_checknumber(L, 5);
+	Color color = checkColor(L, 6);
+	DrawPolyLinesEx(center, sides, radius, rotation, lineThick, color);
 	return 0;
 }
 
@@ -454,8 +603,22 @@ static const luaL_Reg raylib_funcs[] = {
 	{"IsMouseButtonPressed", l_IsMouseButtonPressed},
 
 	/* Shapes */
+	{"DrawLine", l_DrawLine},
 	{"DrawCircle", l_DrawCircle},
+	{"DrawCircleV", l_DrawCircleV},
+	{"DrawCircleGradient", l_DrawCircleGradient},
+	{"DrawCircleLines", l_DrawCircleLines},
+	{"DrawEllipse", l_DrawEllipse},
+	{"DrawEllipseLines", l_DrawEllipseLines},
 	{"DrawRectangle", l_DrawRectangle},
+	{"DrawRectangleGradientV", l_DrawRectangleGradientV},
+	{"DrawRectangleGradientH", l_DrawRectangleGradientH},
+	{"DrawRectangleLines", l_DrawRectangleLines},
+	{"DrawTriangle", l_DrawTriangle},
+	{"DrawTriangleLines", l_DrawTriangleLines},
+	{"DrawPoly", l_DrawPoly},
+	{"DrawPolyLines", l_DrawPolyLines},
+	{"DrawPolyLinesEx", l_DrawPolyLinesEx},
 
 	/* Text */
 	{"DrawText", l_DrawText},
