@@ -439,6 +439,14 @@ static int l_IsMouseButtonPressed(lua_State *L) {
 
 /* ====== rshapes ======= */
 
+static int l_DrawPixel(lua_State *L) {
+	int posX = luaL_checkinteger(L, 1);
+	int posY = luaL_checkinteger(L, 2);
+	Color color = checkColor(L, 3);
+	DrawPixel(posX, posY, color);
+	return 0;
+}
+
 static int l_DrawLine(lua_State *L) {
 	int startPosX = luaL_checkinteger(L, 1);
 	int startPosY = luaL_checkinteger(L, 2);
@@ -597,10 +605,17 @@ static int l_DrawPolyLinesEx(lua_State *L) {
 
 /* ====== rtext ====== */
 
+static int l_DrawFPS(lua_State *L) {
+	int posX = luaL_checkinteger(L, 1);
+	int posY = luaL_checkinteger(L, 2);
+	DrawFPS(posX, posY);
+	return 0; 
+}
+
 static int l_DrawText(lua_State *L) {
 	const char *text = luaL_checkstring(L, 1);
-	float posx = luaL_checkinteger(L, 2);
-	float posy = luaL_checkinteger(L, 3);
+	int posx = luaL_checkinteger(L, 2);
+	int posy = luaL_checkinteger(L, 3);
 	int fontsize = luaL_checkinteger(L, 4);
 	Color color = checkColor(L, 5);
 	DrawText(text, posx, posy, fontsize, color);
@@ -651,6 +666,7 @@ static const luaL_Reg raylib_funcs[] = {
 	{"IsMouseButtonPressed", l_IsMouseButtonPressed},
 
 	/* Shapes */
+	{"DrawPixel", l_DrawPixel},
 	{"DrawLine", l_DrawLine},
 	{"DrawCircle", l_DrawCircle},
 	{"DrawCircleV", l_DrawCircleV},
@@ -669,6 +685,7 @@ static const luaL_Reg raylib_funcs[] = {
 	{"DrawPolyLinesEx", l_DrawPolyLinesEx},
 
 	/* Text */
+	{"DrawFPS", l_DrawFPS},
 	{"DrawText", l_DrawText},
 
 	/* vmunix: TODO: add more functions */
