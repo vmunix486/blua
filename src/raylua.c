@@ -240,6 +240,23 @@ static void registerKeys(lua_State *L) {
 	registerKey(L, MOUSE_BUTTON_EXTRA);
 	registerKey(L, MOUSE_BUTTON_FORWARD);
 	registerKey(L, MOUSE_BUTTON_BACK);
+
+	registerKey(L, FLAG_VSYNC_HINT);
+	registerKey(L, FLAG_FULLSCREEN_MODE);
+	registerKey(L, FLAG_WINDOW_RESIZABLE);
+	registerKey(L, FLAG_WINDOW_UNDECORATED);
+	registerKey(L, FLAG_WINDOW_HIDDEN);
+	registerKey(L, FLAG_WINDOW_MINIMIZED);
+	registerKey(L, FLAG_WINDOW_MAXIMIZED);
+	registerKey(L, FLAG_WINDOW_UNFOCUSED);
+	registerKey(L, FLAG_WINDOW_TOPMOST);
+	registerKey(L, FLAG_WINDOW_ALWAYS_RUN);
+	registerKey(L, FLAG_WINDOW_TRANSPARENT);
+	registerKey(L, FLAG_WINDOW_HIGHDPI);
+	registerKey(L, FLAG_WINDOW_MOUSE_PASSTHROUGH);
+	registerKey(L, FLAG_BORDERLESS_WINDOWED_MODE);
+	registerKey(L, FLAG_MSAA_4X_HINT);
+	registerKey(L, FLAG_INTERLACED_HINT);
 }
 
 /* ====== rcore ====== */
@@ -314,6 +331,21 @@ static int l_ClearWindowState(lua_State *L) {
 	return 0;
 }
 
+static int l_ToggleFullscreen(lua_State *L) {
+	ToggleFullscreen();
+	return 0;
+}
+
+static int l_GetScreenWidth(lua_State *L) {
+	lua_pushinteger(L, GetScreenWidth());
+	return 1;
+}
+
+static int l_GetScreenHeight(lua_State *L) {
+	lua_pushinteger(L, GetScreenHeight());
+	return 1;
+}
+
 /*
  *	Cursor-related functions
 */
@@ -359,6 +391,16 @@ static int l_EndDrawing(lua_State *L) {
 static int l_SetTargetFPS(lua_State *L) {
 	int fps = luaL_checkinteger(L, 1);
 	SetTargetFPS(fps);
+	return 0;
+}
+
+/*
+ *	Misc. functions
+*/
+
+static int l_SetConfigFlags(lua_State *L) {
+	unsigned int flags = (unsigned int)luaL_checkinteger(L, 1);
+	SetConfigFlags(flags);
 	return 0;
 }
 
@@ -557,8 +599,8 @@ static int l_DrawPolyLinesEx(lua_State *L) {
 
 static int l_DrawText(lua_State *L) {
 	const char *text = luaL_checkstring(L, 1);
-	int posx = luaL_checkinteger(L, 2);
-	int posy = luaL_checkinteger(L, 3);
+	float posx = luaL_checkinteger(L, 2);
+	float posy = luaL_checkinteger(L, 3);
 	int fontsize = luaL_checkinteger(L, 4);
 	Color color = checkColor(L, 5);
 	DrawText(text, posx, posy, fontsize, color);
@@ -581,6 +623,9 @@ static const luaL_Reg raylib_funcs[] = {
 	{"IsWindowState", l_IsWindowState},
 	{"SetWindowState", l_SetWindowState},
 	{"ClearWindowState", l_ClearWindowState},
+	{"ToggleFullscreen", l_ToggleFullscreen},
+	{"GetScreenWidth", l_GetScreenWidth},
+	{"GetScreenHeight", l_GetScreenHeight},
 
 	/* Cursor funcs */
 	{"ShowCursor", l_ShowCursor},
@@ -594,6 +639,9 @@ static const luaL_Reg raylib_funcs[] = {
 
 	/* Timing funcs */
 	{"SetTargetFPS", l_SetTargetFPS},
+
+	/* Misc funcs */
+	{"SetConfigFlags", l_SetConfigFlags},
 
 	/* Input funcs */
 	{"IsKeyPressed", l_IsKeyPressed},

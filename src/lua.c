@@ -23,6 +23,7 @@
 
 #ifdef _RAYLIB
 #include "raylua.h"
+#include "linih.h"
 #endif
 
 #if !defined(LUA_PROGNAME)
@@ -726,6 +727,7 @@ static int pmain (lua_State *L) {
 #ifdef _RAYLIB
 	/* ====== Open custom libraries ====== */
 	luaopen_raylib(L);
+	luaopen_ini(L);
 	/* ====== End custom libraries ====== */
 #endif
 

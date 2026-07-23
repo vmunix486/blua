@@ -14,5 +14,3 @@
  - DirectFB2
  - Win32
  - ncurses/curses (for replicating aclock. Only reason why KEKW)
- - inih (ini parsing)
-
