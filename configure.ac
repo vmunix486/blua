@@ -13,6 +13,7 @@ dnl Clear default CFLAGS set by automake; we build our own below.
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_RANLIB
 AM_PROG_AR
 
@@ -229,9 +230,9 @@ AM_CONDITIONAL([HAVE_RAYLIB], [test "x$enable_raylib" = "xyes"])
 
 dnl Check for FLTK
 AC_ARG_ENABLE([fltk],
-  [AS_HELP_STRING([--enable-fltk], [enable FLTK support (requires C++) @<:@default=no@:>@])],
+  [AS_HELP_STRING([--disable-fltk], [disable FLTK support @<:@default=yes@:>@])],
   [enable_fltk=$enableval],
-  [enable_fltk=no])
+  [enable_fltk=yes])
 
 AC_ARG_WITH([fltk],
   [AS_HELP_STRING([--with-fltk=PATH], [path to fltk-config @<:@default=auto@:>@])],
@@ -257,9 +258,6 @@ if test "x$enable_fltk" = "xyes"; then
   dnl Get flags from fltk-config
   FLTK_CXXFLAGS=$($FLTK_CONFIG --cxxflags)
   FLTK_LIBS=$($FLTK_CONFIG --ldflags)
-
-  dnl Ensure C++ compiler is available
-  AC_PROG_CXX
 
   AC_SUBST([FLTK_CXXFLAGS])
   AC_SUBST([FLTK_LIBS])

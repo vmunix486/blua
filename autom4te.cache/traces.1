@@ -2836,13 +2836,29 @@ m4trace:configure.ac:15: -1- m4_pattern_allow([^am__fastdepCC_TRUE$])
 m4trace:configure.ac:15: -1- m4_pattern_allow([^am__fastdepCC_FALSE$])
 m4trace:configure.ac:15: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_TRUE])
 m4trace:configure.ac:15: -1- _AM_SUBST_NOTMAKE([am__fastdepCC_FALSE])
-m4trace:configure.ac:16: -1- m4_pattern_allow([^RANLIB$])
-m4trace:configure.ac:17: -1- AM_PROG_AR
-m4trace:configure.ac:17: -1- m4_pattern_allow([^AR$])
-m4trace:configure.ac:17: -1- m4_pattern_allow([^ac_ct_AR$])
-m4trace:configure.ac:17: -1- m4_pattern_allow([^AR$])
-m4trace:configure.ac:20: -1- AX_CHECK_COMPILE_FLAG([-std=gnu99], [CFLAGS="$CFLAGS -std=gnu99"])
-m4trace:configure.ac:42: -1- AX_CHECK_COMPILE_FLAG([-Ofast], [
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CXX$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CXXFLAGS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CXX$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^ac_ct_CXX$])
+m4trace:configure.ac:16: -1- _AM_DEPENDENCIES([CXX])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^CXXDEPMODE$])
+m4trace:configure.ac:16: -1- AM_CONDITIONAL([am__fastdepCXX], [
+  test "x$enable_dependency_tracking" != xno \
+  && test "$am_cv_CXX_dependencies_compiler_type" = gcc3])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^am__fastdepCXX_TRUE$])
+m4trace:configure.ac:16: -1- m4_pattern_allow([^am__fastdepCXX_FALSE$])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([am__fastdepCXX_TRUE])
+m4trace:configure.ac:16: -1- _AM_SUBST_NOTMAKE([am__fastdepCXX_FALSE])
+m4trace:configure.ac:17: -1- m4_pattern_allow([^RANLIB$])
+m4trace:configure.ac:18: -1- AM_PROG_AR
+m4trace:configure.ac:18: -1- m4_pattern_allow([^AR$])
+m4trace:configure.ac:18: -1- m4_pattern_allow([^ac_ct_AR$])
+m4trace:configure.ac:18: -1- m4_pattern_allow([^AR$])
+m4trace:configure.ac:21: -1- AX_CHECK_COMPILE_FLAG([-std=gnu99], [CFLAGS="$CFLAGS -std=gnu99"])
+m4trace:configure.ac:43: -1- AX_CHECK_COMPILE_FLAG([-Ofast], [
     if test "x$enable_ofast" = "xyes"; then
       CFLAGS="$CFLAGS -Ofast"
       AC_MSG_RESULT([yes])
@@ -2856,7 +2872,7 @@ m4trace:configure.ac:42: -1- AX_CHECK_COMPILE_FLAG([-Ofast], [
     fi
     AC_MSG_RESULT([no (not supported)])
   ])
-m4trace:configure.ac:67: -1- AX_CHECK_COMPILE_FLAG([-flto], [
+m4trace:configure.ac:68: -1- AX_CHECK_COMPILE_FLAG([-flto], [
     AX_CHECK_LINK_FLAG([-flto], [
       if test "x$enable_lto" = "xyes"; then
         CFLAGS="$CFLAGS -flto"
@@ -2879,7 +2895,7 @@ m4trace:configure.ac:67: -1- AX_CHECK_COMPILE_FLAG([-flto], [
     fi
     AC_MSG_RESULT([no (not supported)])
   ])
-m4trace:configure.ac:67: -1- AX_CHECK_LINK_FLAG([-flto], [
+m4trace:configure.ac:68: -1- AX_CHECK_LINK_FLAG([-flto], [
       if test "x$enable_lto" = "xyes"; then
         CFLAGS="$CFLAGS -flto"
         LDFLAGS="$LDFLAGS -flto"
@@ -2895,59 +2911,43 @@ m4trace:configure.ac:67: -1- AX_CHECK_LINK_FLAG([-flto], [
       fi
       AC_MSG_RESULT([no (linker does not support it)])
     ])
-m4trace:configure.ac:106: -1- AX_CHECK_COMPILE_FLAG([-march=$cpu_model], [cpu_flag="-march=$cpu_model"], [
+m4trace:configure.ac:107: -1- AX_CHECK_COMPILE_FLAG([-march=$cpu_model], [cpu_flag="-march=$cpu_model"], [
     AX_CHECK_COMPILE_FLAG([-mtune=$cpu_model], [cpu_flag="-mtune=$cpu_model"])
   ])
-m4trace:configure.ac:106: -1- AX_CHECK_COMPILE_FLAG([-mtune=$cpu_model], [cpu_flag="-mtune=$cpu_model"])
-m4trace:configure.ac:121: -1- AX_CHECK_COMPILE_FLAG([-O3], [CFLAGS="$CFLAGS -O3"])
-m4trace:configure.ac:125: -1- AX_CHECK_COMPILE_FLAG([-Wall], [CFLAGS="$CFLAGS -Wall"])
-m4trace:configure.ac:126: -1- AX_CHECK_COMPILE_FLAG([-Wextra], [CFLAGS="$CFLAGS -Wextra"])
-m4trace:configure.ac:127: -1- AX_CHECK_COMPILE_FLAG([-Wno-stringop-overflow], [CFLAGS="$CFLAGS -Wno-stringop-overflow"])
-m4trace:configure.ac:130: -1- m4_pattern_allow([^HAVE_LIBM$])
-m4trace:configure.ac:131: -1- m4_pattern_allow([^HAVE_LIBDL$])
-m4trace:configure.ac:132: -1- m4_pattern_allow([^HAVE_LIBRT$])
-m4trace:configure.ac:133: -1- m4_pattern_allow([^HAVE_LIBPTHREAD$])
-m4trace:configure.ac:136: -1- m4_pattern_allow([^LUA_USE_LINUX$])
-m4trace:configure.ac:202: -1- m4_pattern_allow([^_RAYLIB$])
-m4trace:configure.ac:202: -1- m4_pattern_allow([^PLATFORM_DRM$])
-m4trace:configure.ac:228: -1- AM_CONDITIONAL([HAVE_RAYLIB], [test "x$enable_raylib" = "xyes"])
-m4trace:configure.ac:228: -1- m4_pattern_allow([^HAVE_RAYLIB_TRUE$])
-m4trace:configure.ac:228: -1- m4_pattern_allow([^HAVE_RAYLIB_FALSE$])
-m4trace:configure.ac:228: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_TRUE])
-m4trace:configure.ac:228: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_FALSE])
-m4trace:configure.ac:246: -1- m4_pattern_allow([^FLTK_CONFIG$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^CXX$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^CXXFLAGS$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^LDFLAGS$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^LIBS$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^CPPFLAGS$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^CXX$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^ac_ct_CXX$])
-m4trace:configure.ac:262: -1- _AM_DEPENDENCIES([CXX])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^CXXDEPMODE$])
-m4trace:configure.ac:262: -1- AM_CONDITIONAL([am__fastdepCXX], [
-  test "x$enable_dependency_tracking" != xno \
-  && test "$am_cv_CXX_dependencies_compiler_type" = gcc3])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^am__fastdepCXX_TRUE$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^am__fastdepCXX_FALSE$])
-m4trace:configure.ac:262: -1- _AM_SUBST_NOTMAKE([am__fastdepCXX_TRUE])
-m4trace:configure.ac:262: -1- _AM_SUBST_NOTMAKE([am__fastdepCXX_FALSE])
-m4trace:configure.ac:264: -1- m4_pattern_allow([^FLTK_CXXFLAGS$])
-m4trace:configure.ac:265: -1- m4_pattern_allow([^FLTK_LIBS$])
-m4trace:configure.ac:266: -1- m4_pattern_allow([^_FLTK$])
-m4trace:configure.ac:269: -1- AM_CONDITIONAL([HAVE_FLTK], [test "x$enable_fltk" = "xyes"])
-m4trace:configure.ac:269: -1- m4_pattern_allow([^HAVE_FLTK_TRUE$])
-m4trace:configure.ac:269: -1- m4_pattern_allow([^HAVE_FLTK_FALSE$])
-m4trace:configure.ac:269: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_TRUE])
-m4trace:configure.ac:269: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_FALSE])
-m4trace:configure.ac:273: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.ac:273: -1- m4_pattern_allow([^LTLIBOBJS$])
-m4trace:configure.ac:273: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
-m4trace:configure.ac:273: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
-m4trace:configure.ac:273: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
-m4trace:configure.ac:273: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
-m4trace:configure.ac:273: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
-m4trace:configure.ac:273: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS
-m4trace:configure.ac:273: -1- AM_RUN_LOG([cd "$am_dirpart" \
+m4trace:configure.ac:107: -1- AX_CHECK_COMPILE_FLAG([-mtune=$cpu_model], [cpu_flag="-mtune=$cpu_model"])
+m4trace:configure.ac:122: -1- AX_CHECK_COMPILE_FLAG([-O3], [CFLAGS="$CFLAGS -O3"])
+m4trace:configure.ac:126: -1- AX_CHECK_COMPILE_FLAG([-Wall], [CFLAGS="$CFLAGS -Wall"])
+m4trace:configure.ac:127: -1- AX_CHECK_COMPILE_FLAG([-Wextra], [CFLAGS="$CFLAGS -Wextra"])
+m4trace:configure.ac:128: -1- AX_CHECK_COMPILE_FLAG([-Wno-stringop-overflow], [CFLAGS="$CFLAGS -Wno-stringop-overflow"])
+m4trace:configure.ac:131: -1- m4_pattern_allow([^HAVE_LIBM$])
+m4trace:configure.ac:132: -1- m4_pattern_allow([^HAVE_LIBDL$])
+m4trace:configure.ac:133: -1- m4_pattern_allow([^HAVE_LIBRT$])
+m4trace:configure.ac:134: -1- m4_pattern_allow([^HAVE_LIBPTHREAD$])
+m4trace:configure.ac:137: -1- m4_pattern_allow([^LUA_USE_LINUX$])
+m4trace:configure.ac:203: -1- m4_pattern_allow([^_RAYLIB$])
+m4trace:configure.ac:203: -1- m4_pattern_allow([^PLATFORM_DRM$])
+m4trace:configure.ac:229: -1- AM_CONDITIONAL([HAVE_RAYLIB], [test "x$enable_raylib" = "xyes"])
+m4trace:configure.ac:229: -1- m4_pattern_allow([^HAVE_RAYLIB_TRUE$])
+m4trace:configure.ac:229: -1- m4_pattern_allow([^HAVE_RAYLIB_FALSE$])
+m4trace:configure.ac:229: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_TRUE])
+m4trace:configure.ac:229: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_FALSE])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^FLTK_CONFIG$])
+m4trace:configure.ac:262: -1- m4_pattern_allow([^FLTK_CXXFLAGS$])
+m4trace:configure.ac:263: -1- m4_pattern_allow([^FLTK_LIBS$])
+m4trace:configure.ac:264: -1- m4_pattern_allow([^_FLTK$])
+m4trace:configure.ac:267: -1- AM_CONDITIONAL([HAVE_FLTK], [test "x$enable_fltk" = "xyes"])
+m4trace:configure.ac:267: -1- m4_pattern_allow([^HAVE_FLTK_TRUE$])
+m4trace:configure.ac:267: -1- m4_pattern_allow([^HAVE_FLTK_FALSE$])
+m4trace:configure.ac:267: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_TRUE])
+m4trace:configure.ac:267: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_FALSE])
+m4trace:configure.ac:271: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:271: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.ac:271: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
+m4trace:configure.ac:271: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
+m4trace:configure.ac:271: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
+m4trace:configure.ac:271: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
+m4trace:configure.ac:271: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
+m4trace:configure.ac:271: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS
+m4trace:configure.ac:271: -1- AM_RUN_LOG([cd "$am_dirpart" \
       && sed -e '/# am--include-marker/d' "$am_filepart" \
         | $MAKE -f - am--depfiles])
