@@ -1,6 +1,5 @@
 # TODO
 
- - Add GNU autotools configure
  - Add all the functions from Raylib
  - Add lots of examples (port ones from raylib, add others for other libraries)
  - Test support with Raylib DRM/KMS (Framebuffer w/o GUI)
