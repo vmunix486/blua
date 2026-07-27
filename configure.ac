@@ -146,6 +146,11 @@ AC_ARG_WITH([raylib],
   [raylib_prefix=$withval],
   [raylib_prefix=""])
 
+AC_ARG_ENABLE([raylib-kms],
+  [AS_HELP_STRING([--enable-raylib-kms], [use DRM/KMS backend instead of desktop GL @<:@default=no@:>@])],
+  [enable_raylib_kms=$enableval],
+  [enable_raylib_kms=no])
+
 if test "x$enable_raylib" = "xyes"; then
   dnl Save original CFLAGS/LIBS/LDFLAGS
   raylib_save_CFLAGS="$CFLAGS"
@@ -155,7 +160,6 @@ if test "x$enable_raylib" = "xyes"; then
   dnl Build candidate flags for raylib search
   raylib_CFLAGS=""
   raylib_LDFLAGS=""
-  raylib_LIBS=""
 
   dnl If a path was given, add it to search paths
   if test -n "$raylib_prefix"; then
@@ -163,8 +167,13 @@ if test "x$enable_raylib" = "xyes"; then
     raylib_LDFLAGS="-L$raylib_prefix/lib -L$raylib_prefix/lib64"
   fi
 
-  dnl Also try common locations
-  for _libdir in /usr/local /usr /usr/X11R7; do
+  dnl Also try common locations (skip X11 paths for KMS mode)
+  if test "x$enable_raylib_kms" = "xno"; then
+    _raylib_search_dirs="/usr/local /usr /usr/X11R7"
+  else
+    _raylib_search_dirs="/usr/local /usr"
+  fi
+  for _libdir in $_raylib_search_dirs; do
     if test "x$raylib_prefix" != "x$_libdir"; then
       if test -d "$_libdir/include" -a -z "$(echo $raylib_CFLAGS | grep $_libdir/include)"; then
         raylib_CFLAGS="$raylib_CFLAGS -I$_libdir/include"
@@ -182,17 +191,28 @@ if test "x$enable_raylib" = "xyes"; then
   CFLAGS="$CFLAGS $raylib_CFLAGS"
   LDFLAGS="$LDFLAGS $raylib_LDFLAGS"
 
-  dnl AC_CHECK_LIB links with just LIBS, but raylib needs -lm -lpthread -lX11 etc.
-  dnl Temporarily build a full link line so the test can succeed.
-  raylib_test_LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+  if test "x$enable_raylib_kms" = "xyes"; then
+    dnl DRM/KMS backend: -lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic
+    raylib_test_LIBS="-lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic"
+  else
+    dnl Desktop GL backend: -lraylib -lm -lpthread -lrt -ldl -lX11
+    raylib_test_LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+  fi
   LIBS="$raylib_test_LIBS $LIBS"
   AC_CHECK_LIB([raylib], [InitWindow], [
-    LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+    if test "x$enable_raylib_kms" = "xyes"; then
+      LIBS="-lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic"
+    else
+      LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+      AC_CHECK_LIB([glfw], [glfwInit], [LIBS="$LIBS -lglfw"], [], [-lraylib -lm -lpthread -lrt -ldl -lX11])
+      AC_CHECK_LIB([GL], [glBegin], [LIBS="$LIBS -lGL"], [], [-lraylib -lm -lpthread -lrt -ldl -lX11 -lglfw])
+    fi
     CFLAGS="$raylib_save_CFLAGS $raylib_CFLAGS"
     LDFLAGS="$raylib_save_LDFLAGS $raylib_LDFLAGS"
-    AC_CHECK_LIB([glfw], [glfwInit], [LIBS="$LIBS -lglfw"], [], [-lraylib -lm -lpthread -lrt -ldl -lX11])
-    AC_CHECK_LIB([GL], [glBegin], [LIBS="$LIBS -lGL"], [], [-lraylib -lm -lpthread -lrt -ldl -lX11 -lglfw])
     AC_DEFINE([_RAYLIB], [1], [Enable raylib support])
+    if test "x$enable_raylib_kms" = "xyes"; then
+      AC_DEFINE([PLATFORM_DRM], [1], [Use DRM/KMS platform for raylib])
+    fi
     if test -n "$raylib_prefix"; then
       AC_MSG_RESULT([using raylib from $raylib_prefix])
     fi
@@ -212,11 +232,21 @@ AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
 
 dnl Print summary
+if test "x$enable_raylib" = "xyes"; then
+  if test "x$enable_raylib_kms" = "xyes"; then
+    raylib_backend="yes (DRM/KMS)"
+  else
+    raylib_backend="yes (Desktop GL)"
+  fi
+else
+  raylib_backend="no"
+fi
+
 echo ""
 echo "blua $PACKAGE_VERSION configuration summary:"
 echo "  C compiler:       $CC"
 echo "  CFLAGS:           $CFLAGS"
 echo "  LDFLAGS:          $LDFLAGS"
 echo "  LIBS:             $LIBS"
-echo "  raylib support:   $enable_raylib"
+echo "  raylib support:   $raylib_backend"
 echo ""

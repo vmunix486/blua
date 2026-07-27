@@ -19,23 +19,18 @@ LIB_SRC = $(LUA_CORE_SRC) $(LUA_LIB_SRC) $(BLUA_SRC)
 LIB_OBJ = $(LIB_SRC:.c=.o)
 
 # Compiler/linker flags
-if HAVE_RAYLIB
-AM_CFLAGS = -D_RAYLIB
-endif
+# _RAYLIB is defined by AC_DEFINE in configure.ac
 
 lib_LIBRARIES = liblua.a
 liblua_a_SOURCES = $(LIB_SRC)
-liblua_a_CFLAGS = $(AM_CFLAGS)
 
 # Interpreter
 bin_PROGRAMS = blua luac
 
 blua_SOURCES = lua.c
-blua_CFLAGS = $(AM_CFLAGS)
 blua_LDADD = liblua.a
 
 luac_SOURCES = luac.c
-luac_CFLAGS = $(AM_CFLAGS)
 luac_LDADD = liblua.a
 
 # Compiler-specific flags for parser/lexer (smaller code)
