@@ -227,6 +227,47 @@ fi
 
 AM_CONDITIONAL([HAVE_RAYLIB], [test "x$enable_raylib" = "xyes"])
 
+dnl Check for FLTK
+AC_ARG_ENABLE([fltk],
+  [AS_HELP_STRING([--enable-fltk], [enable FLTK support (requires C++) @<:@default=no@:>@])],
+  [enable_fltk=$enableval],
+  [enable_fltk=no])
+
+AC_ARG_WITH([fltk],
+  [AS_HELP_STRING([--with-fltk=PATH], [path to fltk-config @<:@default=auto@:>@])],
+  [fltk_config=$withval],
+  [fltk_config=""])
+
+if test "x$enable_fltk" = "xyes"; then
+  dnl Find fltk-config
+  if test -n "$fltk_config"; then
+    FLTK_CONFIG="$fltk_config"
+  else
+    AC_PATH_PROG([FLTK_CONFIG], [fltk-config], [no])
+  fi
+
+  if test "x$FLTK_CONFIG" = "xno"; then
+    AC_MSG_ERROR([fltk-config not found. Install FLTK development files or use --with-fltk=PATH])
+  fi
+
+  AC_MSG_CHECKING([FLTK version])
+  FLTK_VERSION=$($FLTK_CONFIG --version)
+  AC_MSG_RESULT([$FLTK_VERSION])
+
+  dnl Get flags from fltk-config
+  FLTK_CXXFLAGS=$($FLTK_CONFIG --cxxflags)
+  FLTK_LIBS=$($FLTK_CONFIG --ldflags)
+
+  dnl Ensure C++ compiler is available
+  AC_PROG_CXX
+
+  AC_SUBST([FLTK_CXXFLAGS])
+  AC_SUBST([FLTK_LIBS])
+  AC_DEFINE([_FLTK], [1], [Enable FLTK support])
+fi
+
+AM_CONDITIONAL([HAVE_FLTK], [test "x$enable_fltk" = "xyes"])
+
 dnl Output files.
 AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
@@ -249,4 +290,11 @@ echo "  CFLAGS:           $CFLAGS"
 echo "  LDFLAGS:          $LDFLAGS"
 echo "  LIBS:             $LIBS"
 echo "  raylib support:   $raylib_backend"
+if test "x$enable_fltk" = "xyes"; then
+  echo "  FLTK support:     yes (v$FLTK_VERSION)"
+  echo "  FLTK_CXXFLAGS:    $FLTK_CXXFLAGS"
+  echo "  FLTK_LIBS:        $FLTK_LIBS"
+else
+  echo "  FLTK support:     no"
+fi
 echo ""

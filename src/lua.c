@@ -26,6 +26,10 @@
 #include "linih.h"
 #endif
 
+#ifdef _FLTK
+#include "lfltk.h"
+#endif
+
 #if !defined(LUA_PROGNAME)
 #define LUA_PROGNAME		"lua"
 #endif
@@ -729,6 +733,12 @@ static int pmain (lua_State *L) {
 	luaopen_raylib(L);
 	luaopen_ini(L);
 	/* ====== End custom libraries ====== */
+#endif
+
+#ifdef _FLTK
+	/* ====== Open FLTK library ====== */
+	luaopen_fltk(L);
+	/* ====== End FLTK library ====== */
 #endif
 
   createargtable(L, argv, argc, script);  /* create table 'arg' */

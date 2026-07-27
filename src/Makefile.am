@@ -14,6 +14,11 @@ LUA_LIB_SRC = \
 # blua extensions
 BLUA_SRC = raylua.c ini.c linih.c
 
+# FLTK extension (C++) - compiled separately, linked into blua directly
+if HAVE_FLTK
+BLUA_FLTK_SRC = lfltk.cxx
+endif
+
 # All library sources
 LIB_SRC = $(LUA_CORE_SRC) $(LUA_LIB_SRC) $(BLUA_SRC)
 LIB_OBJ = $(LIB_SRC:.c=.o)
@@ -24,11 +29,21 @@ LIB_OBJ = $(LIB_SRC:.c=.o)
 lib_LIBRARIES = liblua.a
 liblua_a_SOURCES = $(LIB_SRC)
 
+if HAVE_FLTK
+liblua_a_CXXFLAGS = @FLTK_CXXFLAGS@
+endif
+
 # Interpreter
 bin_PROGRAMS = blua luac
 
 blua_SOURCES = lua.c
 blua_LDADD = liblua.a
+
+if HAVE_FLTK
+blua_SOURCES += lfltk.cxx
+blua_CXXFLAGS = @FLTK_CXXFLAGS@
+blua_LDADD += @FLTK_LIBS@
+endif
 
 luac_SOURCES = luac.c
 luac_LDADD = liblua.a

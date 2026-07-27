@@ -90,6 +90,8 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = blua$(EXEEXT) luac$(EXEEXT)
+@HAVE_FLTK_TRUE@am__append_1 = lfltk.cxx
+@HAVE_FLTK_TRUE@am__append_2 = @FLTK_LIBS@
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_compile_flag.m4 \
@@ -153,9 +155,14 @@ am__objects_3 = raylua.$(OBJEXT) ini.$(OBJEXT) linih.$(OBJEXT)
 am__objects_4 = $(am__objects_1) $(am__objects_2) $(am__objects_3)
 am_liblua_a_OBJECTS = $(am__objects_4)
 liblua_a_OBJECTS = $(am_liblua_a_OBJECTS)
-am_blua_OBJECTS = lua.$(OBJEXT)
+am__blua_SOURCES_DIST = lua.c lfltk.cxx
+@HAVE_FLTK_TRUE@am__objects_5 = blua-lfltk.$(OBJEXT)
+am_blua_OBJECTS = lua.$(OBJEXT) $(am__objects_5)
 blua_OBJECTS = $(am_blua_OBJECTS)
-blua_DEPENDENCIES = liblua.a
+am__DEPENDENCIES_1 =
+blua_DEPENDENCIES = liblua.a $(am__DEPENDENCIES_1)
+blua_LINK = $(CXXLD) $(blua_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
+	$(LDFLAGS) -o $@
 am_luac_OBJECTS = luac.$(OBJEXT)
 luac_OBJECTS = $(am_luac_OBJECTS)
 luac_DEPENDENCIES = liblua.a
@@ -174,13 +181,14 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/ini.Po ./$(DEPDIR)/lapi.Po \
-	./$(DEPDIR)/lauxlib.Po ./$(DEPDIR)/lbaselib.Po \
-	./$(DEPDIR)/lcode.Po ./$(DEPDIR)/lcorolib.Po \
-	./$(DEPDIR)/lctype.Po ./$(DEPDIR)/ldblib.Po \
-	./$(DEPDIR)/ldebug.Po ./$(DEPDIR)/ldo.Po ./$(DEPDIR)/ldump.Po \
-	./$(DEPDIR)/lfunc.Po ./$(DEPDIR)/lgc.Po ./$(DEPDIR)/linih.Po \
-	./$(DEPDIR)/linit.Po ./$(DEPDIR)/liolib.Po ./$(DEPDIR)/llex.Po \
+am__depfiles_remade = ./$(DEPDIR)/blua-lfltk.Po ./$(DEPDIR)/ini.Po \
+	./$(DEPDIR)/lapi.Po ./$(DEPDIR)/lauxlib.Po \
+	./$(DEPDIR)/lbaselib.Po ./$(DEPDIR)/lcode.Po \
+	./$(DEPDIR)/lcorolib.Po ./$(DEPDIR)/lctype.Po \
+	./$(DEPDIR)/ldblib.Po ./$(DEPDIR)/ldebug.Po ./$(DEPDIR)/ldo.Po \
+	./$(DEPDIR)/ldump.Po ./$(DEPDIR)/lfunc.Po ./$(DEPDIR)/lgc.Po \
+	./$(DEPDIR)/linih.Po ./$(DEPDIR)/linit.Po \
+	./$(DEPDIR)/liolib.Po ./$(DEPDIR)/llex.Po \
 	./$(DEPDIR)/lmathlib.Po ./$(DEPDIR)/lmem.Po \
 	./$(DEPDIR)/loadlib.Po ./$(DEPDIR)/lobject.Po \
 	./$(DEPDIR)/lopcodes.Po ./$(DEPDIR)/loslib.Po \
@@ -203,8 +211,26 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
+AM_V_lt = $(am__v_lt_@AM_V@)
+am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
+am__v_lt_0 = --silent
+am__v_lt_1 = 
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+AM_V_CXX = $(am__v_CXX_@AM_V@)
+am__v_CXX_ = $(am__v_CXX_@AM_DEFAULT_V@)
+am__v_CXX_0 = @echo "  CXX     " $@;
+am__v_CXX_1 = 
+CXXLD = $(CXX)
+CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
+AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
+am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
+am__v_CXXLD_0 = @echo "  CXXLD   " $@;
+am__v_CXXLD_1 = 
 SOURCES = $(liblua_a_SOURCES) $(blua_SOURCES) $(luac_SOURCES)
-DIST_SOURCES = $(liblua_a_SOURCES) $(blua_SOURCES) $(luac_SOURCES)
+DIST_SOURCES = $(liblua_a_SOURCES) $(am__blua_SOURCES_DIST) \
+	$(luac_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -244,6 +270,9 @@ CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 CSCOPE = @CSCOPE@
 CTAGS = @CTAGS@
+CXX = @CXX@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -252,6 +281,9 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 ETAGS = @ETAGS@
 EXEEXT = @EXEEXT@
+FLTK_CONFIG = @FLTK_CONFIG@
+FLTK_CXXFLAGS = @FLTK_CXXFLAGS@
+FLTK_LIBS = @FLTK_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -283,6 +315,7 @@ abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -342,6 +375,9 @@ LUA_LIB_SRC = \
 # blua extensions
 BLUA_SRC = raylua.c ini.c linih.c
 
+# FLTK extension (C++) - compiled separately, linked into blua directly
+@HAVE_FLTK_TRUE@BLUA_FLTK_SRC = lfltk.cxx
+
 # All library sources
 LIB_SRC = $(LUA_CORE_SRC) $(LUA_LIB_SRC) $(BLUA_SRC)
 LIB_OBJ = $(LIB_SRC:.c=.o)
@@ -350,8 +386,10 @@ LIB_OBJ = $(LIB_SRC:.c=.o)
 # _RAYLIB is defined by AC_DEFINE in configure.ac
 lib_LIBRARIES = liblua.a
 liblua_a_SOURCES = $(LIB_SRC)
-blua_SOURCES = lua.c
-blua_LDADD = liblua.a
+@HAVE_FLTK_TRUE@liblua_a_CXXFLAGS = @FLTK_CXXFLAGS@
+blua_SOURCES = lua.c $(am__append_1)
+blua_LDADD = liblua.a $(am__append_2)
+@HAVE_FLTK_TRUE@blua_CXXFLAGS = @FLTK_CXXFLAGS@
 luac_SOURCES = luac.c
 luac_LDADD = liblua.a
 
@@ -360,7 +398,7 @@ CLEANFILES = *.o
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .o .obj
+.SUFFIXES: .c .cxx .o .obj
 $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -471,7 +509,7 @@ liblua.a: $(liblua_a_OBJECTS) $(liblua_a_DEPENDENCIES) $(EXTRA_liblua_a_DEPENDEN
 
 blua$(EXEEXT): $(blua_OBJECTS) $(blua_DEPENDENCIES) $(EXTRA_blua_DEPENDENCIES) 
 	@rm -f blua$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(blua_OBJECTS) $(blua_LDADD) $(LIBS)
+	$(AM_V_CXXLD)$(blua_LINK) $(blua_OBJECTS) $(blua_LDADD) $(LIBS)
 
 luac$(EXEEXT): $(luac_OBJECTS) $(luac_DEPENDENCIES) $(EXTRA_luac_DEPENDENCIES) 
 	@rm -f luac$(EXEEXT)
@@ -483,6 +521,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/blua-lfltk.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ini.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lapi.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lauxlib.Po@am__quote@ # am--include-marker
@@ -542,6 +581,36 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(COMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+.cxx.o:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ $< &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ $<
+
+.cxx.obj:
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.obj$$||'`;\
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $$depbase.Tpo -c -o $@ `$(CYGPATH_W) '$<'` &&\
+@am__fastdepCXX_TRUE@	$(am__mv) $$depbase.Tpo $$depbase.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
+
+blua-lfltk.o: lfltk.cxx
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(blua_CXXFLAGS) $(CXXFLAGS) -MT blua-lfltk.o -MD -MP -MF $(DEPDIR)/blua-lfltk.Tpo -c -o blua-lfltk.o `test -f 'lfltk.cxx' || echo '$(srcdir)/'`lfltk.cxx
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/blua-lfltk.Tpo $(DEPDIR)/blua-lfltk.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='lfltk.cxx' object='blua-lfltk.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(blua_CXXFLAGS) $(CXXFLAGS) -c -o blua-lfltk.o `test -f 'lfltk.cxx' || echo '$(srcdir)/'`lfltk.cxx
+
+blua-lfltk.obj: lfltk.cxx
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(blua_CXXFLAGS) $(CXXFLAGS) -MT blua-lfltk.obj -MD -MP -MF $(DEPDIR)/blua-lfltk.Tpo -c -o blua-lfltk.obj `if test -f 'lfltk.cxx'; then $(CYGPATH_W) 'lfltk.cxx'; else $(CYGPATH_W) '$(srcdir)/lfltk.cxx'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/blua-lfltk.Tpo $(DEPDIR)/blua-lfltk.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='lfltk.cxx' object='blua-lfltk.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(blua_CXXFLAGS) $(CXXFLAGS) -c -o blua-lfltk.obj `if test -f 'lfltk.cxx'; then $(CYGPATH_W) 'lfltk.cxx'; else $(CYGPATH_W) '$(srcdir)/lfltk.cxx'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -672,6 +741,7 @@ clean-am: clean-binPROGRAMS clean-generic clean-libLIBRARIES \
 	mostlyclean-am
 
 distclean: distclean-am
+	-rm -f ./$(DEPDIR)/blua-lfltk.Po
 	-rm -f ./$(DEPDIR)/ini.Po
 	-rm -f ./$(DEPDIR)/lapi.Po
 	-rm -f ./$(DEPDIR)/lauxlib.Po
@@ -754,6 +824,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
+	-rm -f ./$(DEPDIR)/blua-lfltk.Po
 	-rm -f ./$(DEPDIR)/ini.Po
 	-rm -f ./$(DEPDIR)/lapi.Po
 	-rm -f ./$(DEPDIR)/lauxlib.Po
