@@ -124,12 +124,16 @@ esac
 dnl Check for common warning flags
 AX_CHECK_COMPILE_FLAG([-Wall], [CFLAGS="$CFLAGS -Wall"])
 AX_CHECK_COMPILE_FLAG([-Wextra], [CFLAGS="$CFLAGS -Wextra"])
+AX_CHECK_COMPILE_FLAG([-Wno-stringop-overflow], [CFLAGS="$CFLAGS -Wno-stringop-overflow"])
 
 dnl Checks for libraries.
 AC_CHECK_LIB([m], [sin])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([rt], [clock_gettime])
 AC_CHECK_LIB([pthread], [pthread_create])
+
+dnl Define Linux mode for Lua (LUA_USE_LINUX implies LUA_USE_POSIX in luaconf.h).
+AC_DEFINE([LUA_USE_LINUX], [1], [Enable Linux-specific Lua features])
 
 dnl Check for raylib
 AC_ARG_ENABLE([raylib],

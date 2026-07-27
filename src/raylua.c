@@ -268,7 +268,7 @@ static int l_InitWindow(lua_State *L) {
 	return 0;
 }
 
-static int l_CloseWindow(lua_State *L) {
+static int l_CloseWindow() {
 	CloseWindow();
 	return 0;
 }
@@ -331,7 +331,7 @@ static int l_ClearWindowState(lua_State *L) {
 	return 0;
 }
 
-static int l_ToggleFullscreen(lua_State *L) {
+static int l_ToggleFullscreen() {
 	ToggleFullscreen();
 	return 0;
 }
@@ -374,12 +374,12 @@ static int l_ClearBackground(lua_State *L) {
 	return 0;
 }
 
-static int l_BeginDrawing(lua_State *L) {
+static int l_BeginDrawing() {
 	BeginDrawing();
 	return 0;
 }
 
-static int l_EndDrawing(lua_State *L) {
+static int l_EndDrawing() {
 	EndDrawing();
 	return 0;
 }

@@ -578,7 +578,7 @@ static char *prepbuffsize (luaL_Buffer *B, size_t sz, int boxidx) {
       lua_insert(L, boxidx);  /* move box to its intended position */
       lua_toclose(L, boxidx);
       newbuff = (char *)resizebox(L, boxidx, newsize);
-      memcpy(newbuff, B->b, B->n * sizeof(char));  /* copy original content */
+      memcpy(newbuff, B->b, B->n);  /* copy original content */
     }
     B->b = newbuff;
     B->size = newsize;
@@ -597,7 +597,7 @@ LUALIB_API char *luaL_prepbuffsize (luaL_Buffer *B, size_t sz) {
 LUALIB_API void luaL_addlstring (luaL_Buffer *B, const char *s, size_t l) {
   if (l > 0) {  /* avoid 'memcpy' when 's' can be NULL */
     char *b = prepbuffsize(B, l, -1);
-    memcpy(b, s, l * sizeof(char));
+    memcpy(b, s, l);
     luaL_addsize(B, l);
   }
 }
@@ -652,7 +652,7 @@ LUALIB_API void luaL_addvalue (luaL_Buffer *B) {
   size_t len;
   const char *s = lua_tolstring(L, -1, &len);
   char *b = prepbuffsize(B, len, -2);
-  memcpy(b, s, len * sizeof(char));
+  memcpy(b, s, len);
   luaL_addsize(B, len);
   lua_pop(L, 1);  /* pop string */
 }

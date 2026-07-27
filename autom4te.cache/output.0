@@ -5310,6 +5310,50 @@ else case e in @%:@(
 esac
 fi
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether the C compiler accepts -Wno-stringop-overflow" >&5
+printf %s "checking whether the C compiler accepts -Wno-stringop-overflow... " >&6; }
+if test ${ax_cv_check_cflags___Wno_stringop_overflow+y}
+then :
+  printf %s "(cached) " >&6
+else case e in @%:@(
+  e) 
+  ax_check_save_flags=$CFLAGS
+  if test x"$GCC" = xyes ; then
+    add_gnu_werror="-Werror"
+  fi
+  CFLAGS="$CFLAGS  -Wno-stringop-overflow $add_gnu_werror"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  ax_cv_check_cflags___Wno_stringop_overflow=yes
+else case e in @%:@(
+  e) ax_cv_check_cflags___Wno_stringop_overflow=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___Wno_stringop_overflow" >&5
+printf "%s\n" "$ax_cv_check_cflags___Wno_stringop_overflow" >&6; }
+if test "x$ax_cv_check_cflags___Wno_stringop_overflow" = xyes
+then :
+  CFLAGS="$CFLAGS -Wno-stringop-overflow"
+else case e in @%:@(
+  e) : ;;
+esac
+fi
+
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for sin in -lm" >&5
 printf %s "checking for sin in -lm... " >&6; }
@@ -5514,6 +5558,10 @@ then :
   LIBS="-lpthread $LIBS"
 
 fi
+
+
+
+printf "%s\n" "@%:@define LUA_USE_LINUX 1" >>confdefs.h
 
 
 @%:@ Check whether --enable-raylib was given.
