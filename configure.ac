@@ -138,19 +138,70 @@ AC_DEFINE([LUA_USE_LINUX], [1], [Enable Linux-specific Lua features])
 dnl Check for raylib
 AC_ARG_ENABLE([raylib],
   [AS_HELP_STRING([--disable-raylib], [disable raylib support])],
-  [enable_raylib=$enable_raylib],
+  [enable_raylib=$enableval],
   [enable_raylib=yes])
 
+AC_ARG_WITH([raylib],
+  [AS_HELP_STRING([--with-raylib=DIR], [path to raylib installation @<:@default=auto@:>@])],
+  [raylib_prefix=$withval],
+  [raylib_prefix=""])
+
 if test "x$enable_raylib" = "xyes"; then
+  dnl Save original CFLAGS/LIBS/LDFLAGS
+  raylib_save_CFLAGS="$CFLAGS"
+  raylib_save_LIBS="$LIBS"
+  raylib_save_LDFLAGS="$LDFLAGS"
+
+  dnl Build candidate flags for raylib search
+  raylib_CFLAGS=""
+  raylib_LDFLAGS=""
+  raylib_LIBS=""
+
+  dnl If a path was given, add it to search paths
+  if test -n "$raylib_prefix"; then
+    raylib_CFLAGS="-I$raylib_prefix/include"
+    raylib_LDFLAGS="-L$raylib_prefix/lib -L$raylib_prefix/lib64"
+  fi
+
+  dnl Also try common locations
+  for _libdir in /usr/local /usr /usr/X11R7; do
+    if test "x$raylib_prefix" != "x$_libdir"; then
+      if test -d "$_libdir/include" -a -z "$(echo $raylib_CFLAGS | grep $_libdir/include)"; then
+        raylib_CFLAGS="$raylib_CFLAGS -I$_libdir/include"
+      fi
+      if test -d "$_libdir/lib64"; then
+        raylib_LDFLAGS="$raylib_LDFLAGS -L$_libdir/lib64"
+      fi
+      if test -d "$_libdir/lib"; then
+        raylib_LDFLAGS="$raylib_LDFLAGS -L$_libdir/lib"
+      fi
+    fi
+  done
+
+  dnl Temporarily add raylib flags for the check
+  CFLAGS="$CFLAGS $raylib_CFLAGS"
+  LDFLAGS="$LDFLAGS $raylib_LDFLAGS"
+
+  dnl AC_CHECK_LIB links with just LIBS, but raylib needs -lm -lpthread -lX11 etc.
+  dnl Temporarily build a full link line so the test can succeed.
+  raylib_test_LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+  LIBS="$raylib_test_LIBS $LIBS"
   AC_CHECK_LIB([raylib], [InitWindow], [
-    LIBS="$LIBS -lraylib"
-    AC_CHECK_LIB([glfw], [glfwInit], [LIBS="$LIBS -lglfw"])
-    AC_CHECK_LIB([GL], [glBegin], [LIBS="$LIBS -lGL"])
-    AC_CHECK_LIB([X11], [XOpenDisplay], [LIBS="$LIBS -lX11"])
+    LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+    CFLAGS="$raylib_save_CFLAGS $raylib_CFLAGS"
+    LDFLAGS="$raylib_save_LDFLAGS $raylib_LDFLAGS"
+    AC_CHECK_LIB([glfw], [glfwInit], [LIBS="$LIBS -lglfw"], [], [-lraylib -lm -lpthread -lrt -ldl -lX11])
+    AC_CHECK_LIB([GL], [glBegin], [LIBS="$LIBS -lGL"], [], [-lraylib -lm -lpthread -lrt -ldl -lX11 -lglfw])
     AC_DEFINE([_RAYLIB], [1], [Enable raylib support])
+    if test -n "$raylib_prefix"; then
+      AC_MSG_RESULT([using raylib from $raylib_prefix])
+    fi
   ], [
     AC_MSG_WARN([raylib not found, building without raylib support])
     enable_raylib=no
+    CFLAGS="$raylib_save_CFLAGS"
+    LIBS="$raylib_save_LIBS"
+    LDFLAGS="$raylib_save_LDFLAGS"
   ])
 fi
 

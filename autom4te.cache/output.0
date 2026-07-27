@@ -712,6 +712,7 @@ enable_ofast
 enable_lto
 with_cpu
 enable_raylib
+with_raylib
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1358,6 +1359,7 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-cpu=MODEL        set CPU model for -march or -mtune @<:@default=native@:>@
+  --with-raylib=DIR       path to raylib installation @<:@default=auto@:>@
 
 Some influential environment variables:
   CC          C compiler command
@@ -5567,14 +5569,57 @@ printf "%s\n" "@%:@define LUA_USE_LINUX 1" >>confdefs.h
 @%:@ Check whether --enable-raylib was given.
 if test ${enable_raylib+y}
 then :
-  enableval=$enable_raylib; enable_raylib=$enable_raylib
+  enableval=$enable_raylib; enable_raylib=$enableval
 else case e in @%:@(
   e) enable_raylib=yes ;;
 esac
 fi
 
 
+
+@%:@ Check whether --with-raylib was given.
+if test ${with_raylib+y}
+then :
+  withval=$with_raylib; raylib_prefix=$withval
+else case e in @%:@(
+  e) raylib_prefix="" ;;
+esac
+fi
+
+
 if test "x$enable_raylib" = "xyes"; then
+    raylib_save_CFLAGS="$CFLAGS"
+  raylib_save_LIBS="$LIBS"
+  raylib_save_LDFLAGS="$LDFLAGS"
+
+    raylib_CFLAGS=""
+  raylib_LDFLAGS=""
+  raylib_LIBS=""
+
+    if test -n "$raylib_prefix"; then
+    raylib_CFLAGS="-I$raylib_prefix/include"
+    raylib_LDFLAGS="-L$raylib_prefix/lib -L$raylib_prefix/lib64"
+  fi
+
+    for _libdir in /usr/local /usr /usr/X11R7; do
+    if test "x$raylib_prefix" != "x$_libdir"; then
+      if test -d "$_libdir/include" -a -z "$(echo $raylib_CFLAGS | grep $_libdir/include)"; then
+        raylib_CFLAGS="$raylib_CFLAGS -I$_libdir/include"
+      fi
+      if test -d "$_libdir/lib64"; then
+        raylib_LDFLAGS="$raylib_LDFLAGS -L$_libdir/lib64"
+      fi
+      if test -d "$_libdir/lib"; then
+        raylib_LDFLAGS="$raylib_LDFLAGS -L$_libdir/lib"
+      fi
+    fi
+  done
+
+    CFLAGS="$CFLAGS $raylib_CFLAGS"
+  LDFLAGS="$LDFLAGS $raylib_LDFLAGS"
+
+      raylib_test_LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+  LIBS="$raylib_test_LIBS $LIBS"
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for InitWindow in -lraylib" >&5
 printf %s "checking for InitWindow in -lraylib... " >&6; }
 if test ${ac_cv_lib_raylib_InitWindow+y}
@@ -5621,7 +5666,9 @@ printf "%s\n" "$ac_cv_lib_raylib_InitWindow" >&6; }
 if test "x$ac_cv_lib_raylib_InitWindow" = xyes
 then :
   
-    LIBS="$LIBS -lraylib"
+    LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
+    CFLAGS="$raylib_save_CFLAGS $raylib_CFLAGS"
+    LDFLAGS="$raylib_save_LDFLAGS $raylib_LDFLAGS"
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for glfwInit in -lglfw" >&5
 printf %s "checking for glfwInit in -lglfw... " >&6; }
 if test ${ac_cv_lib_glfw_glfwInit+y}
@@ -5629,7 +5676,7 @@ then :
   printf %s "(cached) " >&6
 else case e in @%:@(
   e) ac_check_lib_save_LIBS=$LIBS
-LIBS="-lglfw  $LIBS"
+LIBS="-lglfw -lraylib -lm -lpthread -lrt -ldl -lX11 $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -5677,7 +5724,7 @@ then :
   printf %s "(cached) " >&6
 else case e in @%:@(
   e) ac_check_lib_save_LIBS=$LIBS
-LIBS="-lGL  $LIBS"
+LIBS="-lGL -lraylib -lm -lpthread -lrt -ldl -lX11 -lglfw $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -5718,63 +5765,22 @@ then :
   LIBS="$LIBS -lGL"
 fi
 
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for XOpenDisplay in -lX11" >&5
-printf %s "checking for XOpenDisplay in -lX11... " >&6; }
-if test ${ac_cv_lib_X11_XOpenDisplay+y}
-then :
-  printf %s "(cached) " >&6
-else case e in @%:@(
-  e) ac_check_lib_save_LIBS=$LIBS
-LIBS="-lX11  $LIBS"
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.
-   The 'extern "C"' is for builds by C++ compilers;
-   although this is not generally supported in C code supporting it here
-   has little cost and some practical benefit (sr 110532).  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char XOpenDisplay (void);
-int
-main (void)
-{
-return XOpenDisplay ();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"
-then :
-  ac_cv_lib_X11_XOpenDisplay=yes
-else case e in @%:@(
-  e) ac_cv_lib_X11_XOpenDisplay=no ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam \
-    conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS ;;
-esac
-fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_X11_XOpenDisplay" >&5
-printf "%s\n" "$ac_cv_lib_X11_XOpenDisplay" >&6; }
-if test "x$ac_cv_lib_X11_XOpenDisplay" = xyes
-then :
-  LIBS="$LIBS -lX11"
-fi
-
     
 printf "%s\n" "@%:@define _RAYLIB 1" >>confdefs.h
 
+    if test -n "$raylib_prefix"; then
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: using raylib from $raylib_prefix" >&5
+printf "%s\n" "using raylib from $raylib_prefix" >&6; }
+    fi
   
 else case e in @%:@(
   e) 
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: raylib not found, building without raylib support" >&5
 printf "%s\n" "$as_me: WARNING: raylib not found, building without raylib support" >&2;}
     enable_raylib=no
+    CFLAGS="$raylib_save_CFLAGS"
+    LIBS="$raylib_save_LIBS"
+    LDFLAGS="$raylib_save_LDFLAGS"
    ;;
 esac
 fi
