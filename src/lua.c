@@ -731,14 +731,13 @@ static int pmain (lua_State *L) {
 #ifdef _RAYLIB
 	/* ====== Open custom libraries ====== */
 	luaopen_raylib(L);
-	luaopen_ini(L);
-	/* ====== End custom libraries ====== */
 #endif
 
+	luaopen_ini(L);
+
 #ifdef _FLTK
-	/* ====== Open FLTK library ====== */
 	luaopen_fltk(L);
-	/* ====== End FLTK library ====== */
+	/* ====== End custom library ====== */
 #endif
 
   createargtable(L, argv, argc, script);  /* create table 'arg' */
