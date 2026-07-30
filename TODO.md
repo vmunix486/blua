@@ -7,6 +7,13 @@
  - Fix support on Windows
  - Add support for a `sleep(N)` function
  - Add more functions from curses
+ - Add library detection eg.
+ ```lua
+ if not blua.library("raylib") then
+	 os.exit(1)
+ end
+ ```
+ - Add switch statements. To make porting C programs to Lua easier.
 
 ## To be added libraries
 
