@@ -89,9 +89,11 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+@HAVE_NCURSES_TRUE@am__append_1 = lcurses.c
 bin_PROGRAMS = blua$(EXEEXT) luac$(EXEEXT)
-@HAVE_FLTK_TRUE@am__append_1 = lfltk.cxx
-@HAVE_FLTK_TRUE@am__append_2 = @FLTK_LIBS@
+@HAVE_NCURSES_TRUE@am__append_2 = -lncurses
+@HAVE_FLTK_TRUE@am__append_3 = lfltk.cxx
+@HAVE_FLTK_TRUE@am__append_4 = @FLTK_LIBS@
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ax_check_compile_flag.m4 \
@@ -140,6 +142,12 @@ am__v_AR_1 =
 liblua_a_AR = $(AR) $(ARFLAGS)
 liblua_a_RANLIB = $(RANLIB)
 liblua_a_LIBADD =
+am__liblua_a_SOURCES_DIST = lapi.c lcode.c lctype.c ldebug.c ldo.c \
+	ldump.c lfunc.c lgc.c llex.c lmem.c lobject.c lopcodes.c \
+	lparser.c lstate.c lstring.c ltable.c ltm.c lundump.c lvm.c \
+	lzio.c lauxlib.c lbaselib.c lcorolib.c ldblib.c liolib.c \
+	lmathlib.c loadlib.c loslib.c lstrlib.c ltablib.c lutf8lib.c \
+	linit.c raylua.c ini.c linih.c lcurses.c
 am__objects_1 = lapi.$(OBJEXT) lcode.$(OBJEXT) lctype.$(OBJEXT) \
 	ldebug.$(OBJEXT) ldo.$(OBJEXT) ldump.$(OBJEXT) lfunc.$(OBJEXT) \
 	lgc.$(OBJEXT) llex.$(OBJEXT) lmem.$(OBJEXT) lobject.$(OBJEXT) \
@@ -151,16 +159,19 @@ am__objects_2 = lauxlib.$(OBJEXT) lbaselib.$(OBJEXT) \
 	lmathlib.$(OBJEXT) loadlib.$(OBJEXT) loslib.$(OBJEXT) \
 	lstrlib.$(OBJEXT) ltablib.$(OBJEXT) lutf8lib.$(OBJEXT) \
 	linit.$(OBJEXT)
-am__objects_3 = raylua.$(OBJEXT) ini.$(OBJEXT) linih.$(OBJEXT)
-am__objects_4 = $(am__objects_1) $(am__objects_2) $(am__objects_3)
-am_liblua_a_OBJECTS = $(am__objects_4)
+@HAVE_NCURSES_TRUE@am__objects_3 = lcurses.$(OBJEXT)
+am__objects_4 = raylua.$(OBJEXT) ini.$(OBJEXT) linih.$(OBJEXT) \
+	$(am__objects_3)
+am__objects_5 = $(am__objects_1) $(am__objects_2) $(am__objects_4)
+am_liblua_a_OBJECTS = $(am__objects_5)
 liblua_a_OBJECTS = $(am_liblua_a_OBJECTS)
 am__blua_SOURCES_DIST = lua.c lfltk.cxx
-@HAVE_FLTK_TRUE@am__objects_5 = blua-lfltk.$(OBJEXT)
-am_blua_OBJECTS = lua.$(OBJEXT) $(am__objects_5)
+@HAVE_FLTK_TRUE@am__objects_6 = blua-lfltk.$(OBJEXT)
+am_blua_OBJECTS = lua.$(OBJEXT) $(am__objects_6)
 blua_OBJECTS = $(am_blua_OBJECTS)
 am__DEPENDENCIES_1 =
-blua_DEPENDENCIES = liblua.a $(am__DEPENDENCIES_1)
+blua_DEPENDENCIES = liblua.a $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 blua_LINK = $(CXXLD) $(blua_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 am_luac_OBJECTS = luac.$(OBJEXT)
@@ -185,10 +196,10 @@ am__depfiles_remade = ./$(DEPDIR)/blua-lfltk.Po ./$(DEPDIR)/ini.Po \
 	./$(DEPDIR)/lapi.Po ./$(DEPDIR)/lauxlib.Po \
 	./$(DEPDIR)/lbaselib.Po ./$(DEPDIR)/lcode.Po \
 	./$(DEPDIR)/lcorolib.Po ./$(DEPDIR)/lctype.Po \
-	./$(DEPDIR)/ldblib.Po ./$(DEPDIR)/ldebug.Po ./$(DEPDIR)/ldo.Po \
-	./$(DEPDIR)/ldump.Po ./$(DEPDIR)/lfunc.Po ./$(DEPDIR)/lgc.Po \
-	./$(DEPDIR)/linih.Po ./$(DEPDIR)/linit.Po \
-	./$(DEPDIR)/liolib.Po ./$(DEPDIR)/llex.Po \
+	./$(DEPDIR)/lcurses.Po ./$(DEPDIR)/ldblib.Po \
+	./$(DEPDIR)/ldebug.Po ./$(DEPDIR)/ldo.Po ./$(DEPDIR)/ldump.Po \
+	./$(DEPDIR)/lfunc.Po ./$(DEPDIR)/lgc.Po ./$(DEPDIR)/linih.Po \
+	./$(DEPDIR)/linit.Po ./$(DEPDIR)/liolib.Po ./$(DEPDIR)/llex.Po \
 	./$(DEPDIR)/lmathlib.Po ./$(DEPDIR)/lmem.Po \
 	./$(DEPDIR)/loadlib.Po ./$(DEPDIR)/lobject.Po \
 	./$(DEPDIR)/lopcodes.Po ./$(DEPDIR)/loslib.Po \
@@ -229,7 +240,7 @@ am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
 SOURCES = $(liblua_a_SOURCES) $(blua_SOURCES) $(luac_SOURCES)
-DIST_SOURCES = $(liblua_a_SOURCES) $(am__blua_SOURCES_DIST) \
+DIST_SOURCES = $(am__liblua_a_SOURCES_DIST) $(am__blua_SOURCES_DIST) \
 	$(luac_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -373,7 +384,7 @@ LUA_LIB_SRC = \
 
 
 # blua extensions
-BLUA_SRC = raylua.c ini.c linih.c
+BLUA_SRC = raylua.c ini.c linih.c $(am__append_1)
 
 # FLTK extension (C++) - compiled separately, linked into blua directly
 @HAVE_FLTK_TRUE@BLUA_FLTK_SRC = lfltk.cxx
@@ -387,8 +398,8 @@ LIB_OBJ = $(LIB_SRC:.c=.o)
 lib_LIBRARIES = liblua.a
 liblua_a_SOURCES = $(LIB_SRC)
 @HAVE_FLTK_TRUE@liblua_a_CXXFLAGS = @FLTK_CXXFLAGS@
-blua_SOURCES = lua.c $(am__append_1)
-blua_LDADD = liblua.a $(am__append_2)
+blua_SOURCES = lua.c $(am__append_3)
+blua_LDADD = liblua.a $(am__append_2) $(am__append_4)
 @HAVE_FLTK_TRUE@blua_CXXFLAGS = @FLTK_CXXFLAGS@
 luac_SOURCES = luac.c
 luac_LDADD = liblua.a
@@ -529,6 +540,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lcode.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lcorolib.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lctype.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lcurses.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ldblib.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ldebug.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ldo.Po@am__quote@ # am--include-marker
@@ -749,6 +761,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/lcode.Po
 	-rm -f ./$(DEPDIR)/lcorolib.Po
 	-rm -f ./$(DEPDIR)/lctype.Po
+	-rm -f ./$(DEPDIR)/lcurses.Po
 	-rm -f ./$(DEPDIR)/ldblib.Po
 	-rm -f ./$(DEPDIR)/ldebug.Po
 	-rm -f ./$(DEPDIR)/ldo.Po
@@ -832,6 +845,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/lcode.Po
 	-rm -f ./$(DEPDIR)/lcorolib.Po
 	-rm -f ./$(DEPDIR)/lctype.Po
+	-rm -f ./$(DEPDIR)/lcurses.Po
 	-rm -f ./$(DEPDIR)/ldblib.Po
 	-rm -f ./$(DEPDIR)/ldebug.Po
 	-rm -f ./$(DEPDIR)/ldo.Po

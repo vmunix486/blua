@@ -1373,7 +1373,7 @@ Optional Features:
   --disable-raylib        disable raylib support
   --enable-raylib-kms     use DRM/KMS backend instead of desktop GL
                           [default=no]
-  --enable-fltk           enable FLTK support (requires C++) [default=no]
+  --disable-fltk          disable FLTK support [default=yes]
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -6598,7 +6598,7 @@ if test ${enable_fltk+y}
 then :
   enableval=$enable_fltk; enable_fltk=$enableval
 else case e in #(
-  e) enable_fltk=no ;;
+  e) enable_fltk=yes ;;
 esac
 fi
 

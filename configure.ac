@@ -266,6 +266,24 @@ fi
 
 AM_CONDITIONAL([HAVE_FLTK], [test "x$enable_fltk" = "xyes"])
 
+dnl Check for ncurses
+AC_ARG_ENABLE([curses],
+  [AS_HELP_STRING([--disable-curses], [disable ncurses support @<:@default=yes@:>@])],
+  [enable_curses=$enableval],
+  [enable_curses=yes])
+
+if test "x$enable_curses" = "xyes"; then
+  AC_CHECK_LIB([ncurses], [initscr], [
+    AC_DEFINE([_NCURSES], [1], [Enable ncurses support])
+    AC_CHECK_HEADERS([ncurses.h])
+  ], [
+    AC_MSG_WARN([ncurses not found, building without ncurses support])
+    enable_curses=no
+  ])
+fi
+
+AM_CONDITIONAL([HAVE_NCURSES], [test "x$enable_curses" = "xyes"])
+
 dnl Output files.
 AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
@@ -294,5 +312,10 @@ if test "x$enable_fltk" = "xyes"; then
   echo "  FLTK_LIBS:        $FLTK_LIBS"
 else
   echo "  FLTK support:     no"
+fi
+if test "x$enable_curses" = "xyes"; then
+  echo "  ncurses support:  yes"
+else
+  echo "  ncurses support:  no"
 fi
 echo ""

@@ -30,6 +30,10 @@
 #include "lfltk.h"
 #endif
 
+#ifdef _NCURSES
+#include "lcurses.h"
+#endif
+
 #if !defined(LUA_PROGNAME)
 #define LUA_PROGNAME		"lua"
 #endif
@@ -738,6 +742,10 @@ static int pmain (lua_State *L) {
 #ifdef _FLTK
 	luaopen_fltk(L);
 	/* ====== End custom library ====== */
+#endif
+
+#ifdef _NCURSES
+	luaopen_curses(L);
 #endif
 
   createargtable(L, argv, argc, script);  /* create table 'arg' */

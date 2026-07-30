@@ -5,6 +5,8 @@
  - Add lots of examples (port ones from raylib, add others for other libraries)
  - Fix Raylib crashing on some 3D stuff
  - Fix support on Windows
+ - Add support for a `sleep(N)` function
+ - Add more functions from curses
 
 ## To be added libraries
 
@@ -15,6 +17,5 @@
  - DirectFB2
  - Linux framebuffer (`/dev/fb0`)
  - Nuklear UI
- - ncurses/curses
  - Miniaudio
  - GMP (replacing default Lua math library)

@@ -14,6 +14,10 @@ LUA_LIB_SRC = \
 # blua extensions
 BLUA_SRC = raylua.c ini.c linih.c
 
+if HAVE_NCURSES
+BLUA_SRC += lcurses.c
+endif
+
 # FLTK extension (C++) - compiled separately, linked into blua directly
 if HAVE_FLTK
 BLUA_FLTK_SRC = lfltk.cxx
@@ -38,6 +42,10 @@ bin_PROGRAMS = blua luac
 
 blua_SOURCES = lua.c
 blua_LDADD = liblua.a
+
+if HAVE_NCURSES
+blua_LDADD += -lncurses
+endif
 
 if HAVE_FLTK
 blua_SOURCES += lfltk.cxx
