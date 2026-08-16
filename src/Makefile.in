@@ -147,7 +147,7 @@ am__liblua_a_SOURCES_DIST = lapi.c lcode.c lctype.c ldebug.c ldo.c \
 	lparser.c lstate.c lstring.c ltable.c ltm.c lundump.c lvm.c \
 	lzio.c lauxlib.c lbaselib.c lcorolib.c ldblib.c liolib.c \
 	lmathlib.c loadlib.c loslib.c lstrlib.c ltablib.c lutf8lib.c \
-	linit.c raylua.c ini.c linih.c blua.c lcurses.c
+	linit.c raylua.c ini.c linih.c blua.c lfs.c lcurses.c
 am__objects_1 = lapi.$(OBJEXT) lcode.$(OBJEXT) lctype.$(OBJEXT) \
 	ldebug.$(OBJEXT) ldo.$(OBJEXT) ldump.$(OBJEXT) lfunc.$(OBJEXT) \
 	lgc.$(OBJEXT) llex.$(OBJEXT) lmem.$(OBJEXT) lobject.$(OBJEXT) \
@@ -161,7 +161,7 @@ am__objects_2 = lauxlib.$(OBJEXT) lbaselib.$(OBJEXT) \
 	linit.$(OBJEXT)
 @HAVE_NCURSES_TRUE@am__objects_3 = lcurses.$(OBJEXT)
 am__objects_4 = raylua.$(OBJEXT) ini.$(OBJEXT) linih.$(OBJEXT) \
-	blua.$(OBJEXT) $(am__objects_3)
+	blua.$(OBJEXT) lfs.$(OBJEXT) $(am__objects_3)
 am__objects_5 = $(am__objects_1) $(am__objects_2) $(am__objects_4)
 am_liblua_a_OBJECTS = $(am__objects_5)
 liblua_a_OBJECTS = $(am_liblua_a_OBJECTS)
@@ -198,8 +198,9 @@ am__depfiles_remade = ./$(DEPDIR)/blua-lfltk.Po ./$(DEPDIR)/blua.Po \
 	./$(DEPDIR)/lcorolib.Po ./$(DEPDIR)/lctype.Po \
 	./$(DEPDIR)/lcurses.Po ./$(DEPDIR)/ldblib.Po \
 	./$(DEPDIR)/ldebug.Po ./$(DEPDIR)/ldo.Po ./$(DEPDIR)/ldump.Po \
-	./$(DEPDIR)/lfunc.Po ./$(DEPDIR)/lgc.Po ./$(DEPDIR)/linih.Po \
-	./$(DEPDIR)/linit.Po ./$(DEPDIR)/liolib.Po ./$(DEPDIR)/llex.Po \
+	./$(DEPDIR)/lfs.Po ./$(DEPDIR)/lfunc.Po ./$(DEPDIR)/lgc.Po \
+	./$(DEPDIR)/linih.Po ./$(DEPDIR)/linit.Po \
+	./$(DEPDIR)/liolib.Po ./$(DEPDIR)/llex.Po \
 	./$(DEPDIR)/lmathlib.Po ./$(DEPDIR)/lmem.Po \
 	./$(DEPDIR)/loadlib.Po ./$(DEPDIR)/lobject.Po \
 	./$(DEPDIR)/lopcodes.Po ./$(DEPDIR)/loslib.Po \
@@ -384,7 +385,7 @@ LUA_LIB_SRC = \
 
 
 # blua extensions
-BLUA_SRC = raylua.c ini.c linih.c blua.c $(am__append_1)
+BLUA_SRC = raylua.c ini.c linih.c blua.c lfs.c $(am__append_1)
 
 # FLTK extension (C++) - compiled separately, linked into blua directly
 @HAVE_FLTK_TRUE@BLUA_FLTK_SRC = lfltk.cxx
@@ -546,6 +547,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ldebug.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ldo.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ldump.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lfs.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lfunc.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lgc.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/linih.Po@am__quote@ # am--include-marker
@@ -767,6 +769,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/ldebug.Po
 	-rm -f ./$(DEPDIR)/ldo.Po
 	-rm -f ./$(DEPDIR)/ldump.Po
+	-rm -f ./$(DEPDIR)/lfs.Po
 	-rm -f ./$(DEPDIR)/lfunc.Po
 	-rm -f ./$(DEPDIR)/lgc.Po
 	-rm -f ./$(DEPDIR)/linih.Po
@@ -852,6 +855,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/ldebug.Po
 	-rm -f ./$(DEPDIR)/ldo.Po
 	-rm -f ./$(DEPDIR)/ldump.Po
+	-rm -f ./$(DEPDIR)/lfs.Po
 	-rm -f ./$(DEPDIR)/lfunc.Po
 	-rm -f ./$(DEPDIR)/lgc.Po
 	-rm -f ./$(DEPDIR)/linih.Po

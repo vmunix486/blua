@@ -760,6 +760,7 @@ with_cpu
 enable_raylib
 with_raylib
 enable_raylib_kms
+enable_raylib_sdl2
 enable_fltk
 with_fltk
 enable_curses
@@ -1411,6 +1412,7 @@ Optional Features:
   --disable-raylib        disable raylib support
   --enable-raylib-kms     use DRM/KMS backend instead of desktop GL
                           [default=no]
+  --enable-raylib-sdl2    use SDL2 backend for raylib [default=no]
   --disable-fltk          disable FLTK support [default=yes]
   --disable-curses        disable ncurses support [default=yes]
 
@@ -6429,6 +6431,16 @@ esac
 fi
 
 
+# Check whether --enable-raylib-sdl2 was given.
+if test ${enable_raylib_sdl2+y}
+then :
+  enableval=$enable_raylib_sdl2; enable_raylib_sdl2=$enableval
+else case e in #(
+  e) enable_raylib_sdl2=no ;;
+esac
+fi
+
+
 if test "x$enable_raylib" = "xyes"; then
     raylib_save_CFLAGS="$CFLAGS"
   raylib_save_LIBS="$LIBS"
@@ -6442,7 +6454,7 @@ if test "x$enable_raylib" = "xyes"; then
     raylib_LDFLAGS="-L$raylib_prefix/lib -L$raylib_prefix/lib64"
   fi
 
-    if test "x$enable_raylib_kms" = "xno"; then
+    if test "x$enable_raylib_kms" = "xno" -a "x$enable_raylib_sdl2" = "xno"; then
     _raylib_search_dirs="/usr/local /usr /usr/X11R7"
   else
     _raylib_search_dirs="/usr/local /usr"
@@ -6464,7 +6476,9 @@ if test "x$enable_raylib" = "xyes"; then
     CFLAGS="$CFLAGS $raylib_CFLAGS"
   LDFLAGS="$LDFLAGS $raylib_LDFLAGS"
 
-  if test "x$enable_raylib_kms" = "xyes"; then
+  if test "x$enable_raylib_sdl2" = "xyes"; then
+        raylib_test_LIBS="-lraylib -lSDL2 -lSDL2main -lGL -lm -lpthread -ldl -lrt -lX11 -latomic"
+  elif test "x$enable_raylib_kms" = "xyes"; then
         raylib_test_LIBS="-lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic"
   else
         raylib_test_LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
@@ -6516,7 +6530,9 @@ printf "%s\n" "$ac_cv_lib_raylib_InitWindow" >&6; }
 if test "x$ac_cv_lib_raylib_InitWindow" = xyes
 then :
 
-    if test "x$enable_raylib_kms" = "xyes"; then
+    if test "x$enable_raylib_sdl2" = "xyes"; then
+      LIBS="-lraylib -lSDL2 -lSDL2main -lGL -lm -lpthread -ldl -lrt -lX11 -latomic"
+    elif test "x$enable_raylib_kms" = "xyes"; then
       LIBS="-lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic"
     else
       LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
@@ -6625,6 +6641,11 @@ printf "%s\n" "#define _RAYLIB 1" >>confdefs.h
     if test "x$enable_raylib_kms" = "xyes"; then
 
 printf "%s\n" "#define PLATFORM_DRM 1" >>confdefs.h
+
+    fi
+    if test "x$enable_raylib_sdl2" = "xyes"; then
+
+printf "%s\n" "#define PLATFORM_SDL2 1" >>confdefs.h
 
     fi
     if test -n "$raylib_prefix"; then
@@ -8210,7 +8231,9 @@ fi
 
 
 if test "x$enable_raylib" = "xyes"; then
-  if test "x$enable_raylib_kms" = "xyes"; then
+  if test "x$enable_raylib_sdl2" = "xyes"; then
+    raylib_backend="yes (SDL2)"
+  elif test "x$enable_raylib_kms" = "xyes"; then
     raylib_backend="yes (DRM/KMS)"
   else
     raylib_backend="yes (Desktop GL)"

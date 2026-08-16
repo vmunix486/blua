@@ -36,6 +36,7 @@
 #endif
 
 #include "blua.h"
+#include "lfs.h"
 
 #if !defined(LUA_PROGNAME)
 #define LUA_PROGNAME		"lua"
@@ -772,6 +773,7 @@ static int pmain (lua_State *L) {
 
 	luaopen_ini(L);
 	luaopen_blua(L);
+	luaopen_fs(L);
 
 #ifdef _FLTK
 	luaopen_fltk(L);
