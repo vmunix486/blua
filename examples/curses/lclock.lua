@@ -58,7 +58,7 @@ while true do
 	curses.mvprintw(math.floor(sYcen + (3 * hand_max / 5)), math.floor(sXcen - 5), string.format("[%02d:%02d:%02d]", time.hour, time.min, time.sec))
 
 	curses.refresh()
-	os.execute("sleep 1")
+	blua.sleep(1)
 end
 
 curses.endwin()
