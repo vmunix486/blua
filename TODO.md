@@ -15,7 +15,6 @@
  - Add switch statements. To make porting C programs to Lua easier.
  - Add `range(N)`, like Python.
  - Add some networking stuff (`net.httpget(url)`, `net.httpsget(url)`, `net.ping(url)`, `net.ftpget(url)`, etc. etc. All the things that get stuff from url's will output it, so you can set it to a variable.)
- - Add support for C89-only compilation
 
 ## To be added libraries
 

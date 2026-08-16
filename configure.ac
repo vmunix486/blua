@@ -176,6 +176,11 @@ AC_ARG_ENABLE([raylib-kms],
   [enable_raylib_kms=$enableval],
   [enable_raylib_kms=no])
 
+AC_ARG_ENABLE([raylib-sdl2],
+  [AS_HELP_STRING([--enable-raylib-sdl2], [use SDL2 backend for raylib @<:@default=no@:>@])],
+  [enable_raylib_sdl2=$enableval],
+  [enable_raylib_sdl2=no])
+
 if test "x$enable_raylib" = "xyes"; then
   dnl Save original CFLAGS/LIBS/LDFLAGS
   raylib_save_CFLAGS="$CFLAGS"
@@ -192,8 +197,8 @@ if test "x$enable_raylib" = "xyes"; then
     raylib_LDFLAGS="-L$raylib_prefix/lib -L$raylib_prefix/lib64"
   fi
 
-  dnl Also try common locations (skip X11 paths for KMS mode)
-  if test "x$enable_raylib_kms" = "xno"; then
+  dnl Also try common locations (skip X11 paths for KMS/SDL2 modes)
+  if test "x$enable_raylib_kms" = "xno" -a "x$enable_raylib_sdl2" = "xno"; then
     _raylib_search_dirs="/usr/local /usr /usr/X11R7"
   else
     _raylib_search_dirs="/usr/local /usr"
@@ -216,7 +221,10 @@ if test "x$enable_raylib" = "xyes"; then
   CFLAGS="$CFLAGS $raylib_CFLAGS"
   LDFLAGS="$LDFLAGS $raylib_LDFLAGS"
 
-  if test "x$enable_raylib_kms" = "xyes"; then
+  if test "x$enable_raylib_sdl2" = "xyes"; then
+    dnl SDL2 backend: -lraylib -lSDL2 -lSDL2main -lGL -lm -lpthread -ldl -lrt -lX11 -latomic
+    raylib_test_LIBS="-lraylib -lSDL2 -lSDL2main -lGL -lm -lpthread -ldl -lrt -lX11 -latomic"
+  elif test "x$enable_raylib_kms" = "xyes"; then
     dnl DRM/KMS backend: -lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic
     raylib_test_LIBS="-lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic"
   else
@@ -225,7 +233,9 @@ if test "x$enable_raylib" = "xyes"; then
   fi
   LIBS="$raylib_test_LIBS $LIBS"
   AC_CHECK_LIB([raylib], [InitWindow], [
-    if test "x$enable_raylib_kms" = "xyes"; then
+    if test "x$enable_raylib_sdl2" = "xyes"; then
+      LIBS="-lraylib -lSDL2 -lSDL2main -lGL -lm -lpthread -ldl -lrt -lX11 -latomic"
+    elif test "x$enable_raylib_kms" = "xyes"; then
       LIBS="-lraylib -lGLESv2 -lEGL -ldrm -lgbm -lpthread -lrt -lm -ldl -latomic"
     else
       LIBS="-lraylib -lm -lpthread -lrt -ldl -lX11"
@@ -237,6 +247,9 @@ if test "x$enable_raylib" = "xyes"; then
     AC_DEFINE([_RAYLIB], [1], [Enable raylib support])
     if test "x$enable_raylib_kms" = "xyes"; then
       AC_DEFINE([PLATFORM_DRM], [1], [Use DRM/KMS platform for raylib])
+    fi
+    if test "x$enable_raylib_sdl2" = "xyes"; then
+      AC_DEFINE([PLATFORM_SDL2], [1], [Use SDL2 platform for raylib])
     fi
     if test -n "$raylib_prefix"; then
       AC_MSG_RESULT([using raylib from $raylib_prefix])
@@ -314,7 +327,9 @@ AC_OUTPUT
 
 dnl Print summary
 if test "x$enable_raylib" = "xyes"; then
-  if test "x$enable_raylib_kms" = "xyes"; then
+  if test "x$enable_raylib_sdl2" = "xyes"; then
+    raylib_backend="yes (SDL2)"
+  elif test "x$enable_raylib_kms" = "xyes"; then
     raylib_backend="yes (DRM/KMS)"
   else
     raylib_backend="yes (Desktop GL)"

@@ -1405,6 +1405,7 @@ Optional Features:
   --disable-dependency-tracking
                           speeds up one-time build
   --enable-c89            compile with strict C89 (ANSI C) instead of C99
+                          [default=no]
   --enable-ofast          use -Ofast optimization [default=auto]
   --enable-lto            use link-time optimization [default=auto]
   --disable-raylib        disable raylib support
@@ -5562,6 +5563,8 @@ fi
 
 
 if test "x$enable_c89" = "xyes"; then
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: C89 mode is incompatible with POSIX; some Lua features may not work on Linux" >&5
+printf "%s\n" "$as_me: WARNING: C89 mode is incompatible with POSIX; some Lua features may not work on Linux" >&2;}
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -std=c89" >&5
 printf %s "checking whether C compiler accepts -std=c89... " >&6; }
 if test ${ax_cv_check_cflags___std_c89+y}
@@ -8220,7 +8223,7 @@ echo ""
 echo "blua $PACKAGE_VERSION configuration summary:"
 echo "  C compiler:       $CC"
 if test "x$enable_c89" = "xyes"; then
-  echo "  C standard:       C89 (ANSI C)"
+  echo "  C standard:       C89 (ANSI C) -- warning: incompatible with POSIX"
 else
   echo "  C standard:       C99"
 fi
