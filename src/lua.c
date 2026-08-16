@@ -34,6 +34,8 @@
 #include "lcurses.h"
 #endif
 
+#include "blua.h"
+
 #if !defined(LUA_PROGNAME)
 #define LUA_PROGNAME		"lua"
 #endif
@@ -768,6 +770,7 @@ static int pmain (lua_State *L) {
 #endif
 
 	luaopen_ini(L);
+	luaopen_blua(L);
 
 #ifdef _FLTK
 	luaopen_fltk(L);

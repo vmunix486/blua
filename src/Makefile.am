@@ -12,7 +12,7 @@ LUA_LIB_SRC = \
 	lutf8lib.c linit.c
 
 # blua extensions
-BLUA_SRC = raylua.c ini.c linih.c
+BLUA_SRC = raylua.c ini.c linih.c blua.c
 
 if HAVE_NCURSES
 BLUA_SRC += lcurses.c
