@@ -17,8 +17,32 @@ AC_PROG_CXX
 AC_PROG_RANLIB
 AM_PROG_AR
 
-dnl Check for C99 support (Lua requires it)
-AX_CHECK_COMPILE_FLAG([-std=gnu99], [CFLAGS="$CFLAGS -std=gnu99"])
+dnl Check for C standard: --enable-c89 for strict C89 mode (default: C99)
+dnl Note: C89 mode is incompatible with POSIX features (LUA_USE_POSIX).
+dnl On Linux, C99 is required for POSIX headers (signal, etc.).
+AC_ARG_ENABLE([c89],
+  [AS_HELP_STRING([--enable-c89], [compile with strict C89 (ANSI C) instead of C99 @<:@default=no@:>@])],
+  [enable_c89=$enableval],
+  [enable_c89=no])
+
+if test "x$enable_c89" = "xyes"; then
+  dnl C89 mode on Linux/POSIX is not supported by Lua 5.5.
+  dnl Only use it for non-POSIX builds (e.g. Windows cross-compilation).
+  AC_MSG_WARN([C89 mode is incompatible with POSIX; some Lua features may not work on Linux])
+  AX_CHECK_COMPILE_FLAG([-std=c89], [
+    CFLAGS="$CFLAGS -std=c89"
+    AC_DEFINE([LUA_USE_C89], [1], [Compile in strict C89 mode])
+  ], [
+    AX_CHECK_COMPILE_FLAG([-ansi], [
+      CFLAGS="$CFLAGS -ansi"
+      AC_DEFINE([LUA_USE_C89], [1], [Compile in strict C89 mode])
+    ], [
+      AC_MSG_ERROR([C89/ANSI mode requested but compiler does not support -std=c89 or -ansi])
+    ])
+  ])
+else
+  AX_CHECK_COMPILE_FLAG([-std=gnu99], [CFLAGS="$CFLAGS -std=gnu99"])
+fi
 
 dnl ==========================================================================
 dnl Compiler optimization flag detection
@@ -302,6 +326,11 @@ fi
 echo ""
 echo "blua $PACKAGE_VERSION configuration summary:"
 echo "  C compiler:       $CC"
+if test "x$enable_c89" = "xyes"; then
+  echo "  C standard:       C89 (ANSI C) -- warning: incompatible with POSIX"
+else
+  echo "  C standard:       C99"
+fi
 echo "  CFLAGS:           $CFLAGS"
 echo "  LDFLAGS:          $LDFLAGS"
 echo "  LIBS:             $LIBS"

@@ -753,6 +753,7 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 enable_dependency_tracking
+enable_c89
 enable_ofast
 enable_lto
 with_cpu
@@ -1403,6 +1404,8 @@ Optional Features:
                           do not reject slow dependency extractors
   --disable-dependency-tracking 
                           speeds up one-time build
+  --enable-c89            compile with strict C89 (ANSI C) instead of C99
+                          @<:@default=no@:>@
   --enable-ofast          use -Ofast optimization @<:@default=auto@:>@
   --enable-lto            use link-time optimization @<:@default=auto@:>@
   --disable-raylib        disable raylib support
@@ -5549,7 +5552,116 @@ unknown)
 esac
 
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -std=gnu99" >&5
+@%:@ Check whether --enable-c89 was given.
+if test ${enable_c89+y}
+then :
+  enableval=$enable_c89; enable_c89=$enableval
+else case e in @%:@(
+  e) enable_c89=no ;;
+esac
+fi
+
+
+if test "x$enable_c89" = "xyes"; then
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: C89 mode is incompatible with POSIX; some Lua features may not work on Linux" >&5
+printf "%s\n" "$as_me: WARNING: C89 mode is incompatible with POSIX; some Lua features may not work on Linux" >&2;}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -std=c89" >&5
+printf %s "checking whether C compiler accepts -std=c89... " >&6; }
+if test ${ax_cv_check_cflags___std_c89+y}
+then :
+  printf %s "(cached) " >&6
+else case e in @%:@(
+  e) 
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  -std=c89"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  ax_cv_check_cflags___std_c89=yes
+else case e in @%:@(
+  e) ax_cv_check_cflags___std_c89=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___std_c89" >&5
+printf "%s\n" "$ax_cv_check_cflags___std_c89" >&6; }
+if test "x$ax_cv_check_cflags___std_c89" = xyes
+then :
+  
+    CFLAGS="$CFLAGS -std=c89"
+    
+printf "%s\n" "@%:@define LUA_USE_C89 1" >>confdefs.h
+
+  
+else case e in @%:@(
+  e) 
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -ansi" >&5
+printf %s "checking whether C compiler accepts -ansi... " >&6; }
+if test ${ax_cv_check_cflags___ansi+y}
+then :
+  printf %s "(cached) " >&6
+else case e in @%:@(
+  e) 
+  ax_check_save_flags=$CFLAGS
+  CFLAGS="$CFLAGS  -ansi"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  ax_cv_check_cflags___ansi=yes
+else case e in @%:@(
+  e) ax_cv_check_cflags___ansi=no ;;
+esac
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+  CFLAGS=$ax_check_save_flags ;;
+esac
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ax_cv_check_cflags___ansi" >&5
+printf "%s\n" "$ax_cv_check_cflags___ansi" >&6; }
+if test "x$ax_cv_check_cflags___ansi" = xyes
+then :
+  
+      CFLAGS="$CFLAGS -ansi"
+      
+printf "%s\n" "@%:@define LUA_USE_C89 1" >>confdefs.h
+
+    
+else case e in @%:@(
+  e) 
+      as_fn_error $? "C89/ANSI mode requested but compiler does not support -std=c89 or -ansi" "$LINENO" 5
+     ;;
+esac
+fi
+
+   ;;
+esac
+fi
+
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts -std=gnu99" >&5
 printf %s "checking whether C compiler accepts -std=gnu99... " >&6; }
 if test ${ax_cv_check_cflags___std_gnu99+y}
 then :
@@ -5590,6 +5702,7 @@ else case e in @%:@(
 esac
 fi
 
+fi
 
 : ${CFLAGS=""}
 CFLAGS=$(echo "$CFLAGS" | sed 's/-g//;s/-O0-9*//g;s/^ *//;s/ *$//')
@@ -8109,6 +8222,11 @@ fi
 echo ""
 echo "blua $PACKAGE_VERSION configuration summary:"
 echo "  C compiler:       $CC"
+if test "x$enable_c89" = "xyes"; then
+  echo "  C standard:       C89 (ANSI C) -- warning: incompatible with POSIX"
+else
+  echo "  C standard:       C99"
+fi
 echo "  CFLAGS:           $CFLAGS"
 echo "  LDFLAGS:          $LDFLAGS"
 echo "  LIBS:             $LIBS"

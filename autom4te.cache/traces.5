@@ -1151,8 +1151,27 @@ m4trace:configure.ac:18: -1- AM_PROG_AR
 m4trace:configure.ac:18: -1- m4_pattern_allow([^AR$])
 m4trace:configure.ac:18: -1- m4_pattern_allow([^ac_ct_AR$])
 m4trace:configure.ac:18: -1- m4_pattern_allow([^AR$])
-m4trace:configure.ac:21: -1- AX_CHECK_COMPILE_FLAG([-std=gnu99], [CFLAGS="$CFLAGS -std=gnu99"])
-m4trace:configure.ac:43: -1- AX_CHECK_COMPILE_FLAG([-Ofast], [
+m4trace:configure.ac:32: -1- AX_CHECK_COMPILE_FLAG([-std=c89], [
+    CFLAGS="$CFLAGS -std=c89"
+    AC_DEFINE([LUA_USE_C89], [1], [Compile in strict C89 mode])
+  ], [
+    AX_CHECK_COMPILE_FLAG([-ansi], [
+      CFLAGS="$CFLAGS -ansi"
+      AC_DEFINE([LUA_USE_C89], [1], [Compile in strict C89 mode])
+    ], [
+      AC_MSG_ERROR([C89/ANSI mode requested but compiler does not support -std=c89 or -ansi])
+    ])
+  ])
+m4trace:configure.ac:32: -1- m4_pattern_allow([^LUA_USE_C89$])
+m4trace:configure.ac:32: -1- AX_CHECK_COMPILE_FLAG([-ansi], [
+      CFLAGS="$CFLAGS -ansi"
+      AC_DEFINE([LUA_USE_C89], [1], [Compile in strict C89 mode])
+    ], [
+      AC_MSG_ERROR([C89/ANSI mode requested but compiler does not support -std=c89 or -ansi])
+    ])
+m4trace:configure.ac:32: -1- m4_pattern_allow([^LUA_USE_C89$])
+m4trace:configure.ac:44: -1- AX_CHECK_COMPILE_FLAG([-std=gnu99], [CFLAGS="$CFLAGS -std=gnu99"])
+m4trace:configure.ac:67: -1- AX_CHECK_COMPILE_FLAG([-Ofast], [
     if test "x$enable_ofast" = "xyes"; then
       CFLAGS="$CFLAGS -Ofast"
       AC_MSG_RESULT([yes])
@@ -1166,7 +1185,7 @@ m4trace:configure.ac:43: -1- AX_CHECK_COMPILE_FLAG([-Ofast], [
     fi
     AC_MSG_RESULT([no (not supported)])
   ])
-m4trace:configure.ac:68: -1- AX_CHECK_COMPILE_FLAG([-flto], [
+m4trace:configure.ac:92: -1- AX_CHECK_COMPILE_FLAG([-flto], [
     AX_CHECK_LINK_FLAG([-flto], [
       if test "x$enable_lto" = "xyes"; then
         CFLAGS="$CFLAGS -flto"
@@ -1189,7 +1208,7 @@ m4trace:configure.ac:68: -1- AX_CHECK_COMPILE_FLAG([-flto], [
     fi
     AC_MSG_RESULT([no (not supported)])
   ])
-m4trace:configure.ac:68: -1- AX_CHECK_LINK_FLAG([-flto], [
+m4trace:configure.ac:92: -1- AX_CHECK_LINK_FLAG([-flto], [
       if test "x$enable_lto" = "xyes"; then
         CFLAGS="$CFLAGS -flto"
         LDFLAGS="$LDFLAGS -flto"
@@ -1205,78 +1224,78 @@ m4trace:configure.ac:68: -1- AX_CHECK_LINK_FLAG([-flto], [
       fi
       AC_MSG_RESULT([no (linker does not support it)])
     ])
-m4trace:configure.ac:107: -1- AX_CHECK_COMPILE_FLAG([-march=$cpu_model], [cpu_flag="-march=$cpu_model"], [
+m4trace:configure.ac:131: -1- AX_CHECK_COMPILE_FLAG([-march=$cpu_model], [cpu_flag="-march=$cpu_model"], [
     AX_CHECK_COMPILE_FLAG([-mtune=$cpu_model], [cpu_flag="-mtune=$cpu_model"])
   ])
-m4trace:configure.ac:107: -1- AX_CHECK_COMPILE_FLAG([-mtune=$cpu_model], [cpu_flag="-mtune=$cpu_model"])
-m4trace:configure.ac:122: -1- AX_CHECK_COMPILE_FLAG([-O3], [CFLAGS="$CFLAGS -O3"])
-m4trace:configure.ac:126: -1- AX_CHECK_COMPILE_FLAG([-Wall], [CFLAGS="$CFLAGS -Wall"])
-m4trace:configure.ac:127: -1- AX_CHECK_COMPILE_FLAG([-Wextra], [CFLAGS="$CFLAGS -Wextra"])
-m4trace:configure.ac:128: -1- AX_CHECK_COMPILE_FLAG([-Wno-stringop-overflow], [CFLAGS="$CFLAGS -Wno-stringop-overflow"])
-m4trace:configure.ac:131: -1- m4_pattern_allow([^HAVE_LIBM$])
-m4trace:configure.ac:132: -1- m4_pattern_allow([^HAVE_LIBDL$])
-m4trace:configure.ac:133: -1- m4_pattern_allow([^HAVE_LIBRT$])
-m4trace:configure.ac:134: -1- m4_pattern_allow([^HAVE_LIBPTHREAD$])
-m4trace:configure.ac:137: -1- m4_pattern_allow([^LUA_USE_LINUX$])
-m4trace:configure.ac:203: -1- m4_pattern_allow([^_RAYLIB$])
-m4trace:configure.ac:203: -1- m4_pattern_allow([^PLATFORM_DRM$])
-m4trace:configure.ac:229: -1- AM_CONDITIONAL([HAVE_RAYLIB], [test "x$enable_raylib" = "xyes"])
-m4trace:configure.ac:229: -1- m4_pattern_allow([^HAVE_RAYLIB_TRUE$])
-m4trace:configure.ac:229: -1- m4_pattern_allow([^HAVE_RAYLIB_FALSE$])
-m4trace:configure.ac:229: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_TRUE])
-m4trace:configure.ac:229: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_FALSE])
-m4trace:configure.ac:247: -1- m4_pattern_allow([^FLTK_CONFIG$])
-m4trace:configure.ac:262: -1- m4_pattern_allow([^FLTK_CXXFLAGS$])
-m4trace:configure.ac:263: -1- m4_pattern_allow([^FLTK_LIBS$])
-m4trace:configure.ac:264: -1- m4_pattern_allow([^_FLTK$])
-m4trace:configure.ac:267: -1- AM_CONDITIONAL([HAVE_FLTK], [test "x$enable_fltk" = "xyes"])
-m4trace:configure.ac:267: -1- m4_pattern_allow([^HAVE_FLTK_TRUE$])
-m4trace:configure.ac:267: -1- m4_pattern_allow([^HAVE_FLTK_FALSE$])
-m4trace:configure.ac:267: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_TRUE])
-m4trace:configure.ac:267: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_FALSE])
-m4trace:configure.ac:276: -1- m4_pattern_allow([^_NCURSES$])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_stdio_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:131: -1- AX_CHECK_COMPILE_FLAG([-mtune=$cpu_model], [cpu_flag="-mtune=$cpu_model"])
+m4trace:configure.ac:146: -1- AX_CHECK_COMPILE_FLAG([-O3], [CFLAGS="$CFLAGS -O3"])
+m4trace:configure.ac:150: -1- AX_CHECK_COMPILE_FLAG([-Wall], [CFLAGS="$CFLAGS -Wall"])
+m4trace:configure.ac:151: -1- AX_CHECK_COMPILE_FLAG([-Wextra], [CFLAGS="$CFLAGS -Wextra"])
+m4trace:configure.ac:152: -1- AX_CHECK_COMPILE_FLAG([-Wno-stringop-overflow], [CFLAGS="$CFLAGS -Wno-stringop-overflow"])
+m4trace:configure.ac:155: -1- m4_pattern_allow([^HAVE_LIBM$])
+m4trace:configure.ac:156: -1- m4_pattern_allow([^HAVE_LIBDL$])
+m4trace:configure.ac:157: -1- m4_pattern_allow([^HAVE_LIBRT$])
+m4trace:configure.ac:158: -1- m4_pattern_allow([^HAVE_LIBPTHREAD$])
+m4trace:configure.ac:161: -1- m4_pattern_allow([^LUA_USE_LINUX$])
+m4trace:configure.ac:227: -1- m4_pattern_allow([^_RAYLIB$])
+m4trace:configure.ac:227: -1- m4_pattern_allow([^PLATFORM_DRM$])
+m4trace:configure.ac:253: -1- AM_CONDITIONAL([HAVE_RAYLIB], [test "x$enable_raylib" = "xyes"])
+m4trace:configure.ac:253: -1- m4_pattern_allow([^HAVE_RAYLIB_TRUE$])
+m4trace:configure.ac:253: -1- m4_pattern_allow([^HAVE_RAYLIB_FALSE$])
+m4trace:configure.ac:253: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_TRUE])
+m4trace:configure.ac:253: -1- _AM_SUBST_NOTMAKE([HAVE_RAYLIB_FALSE])
+m4trace:configure.ac:271: -1- m4_pattern_allow([^FLTK_CONFIG$])
+m4trace:configure.ac:286: -1- m4_pattern_allow([^FLTK_CXXFLAGS$])
+m4trace:configure.ac:287: -1- m4_pattern_allow([^FLTK_LIBS$])
+m4trace:configure.ac:288: -1- m4_pattern_allow([^_FLTK$])
+m4trace:configure.ac:291: -1- AM_CONDITIONAL([HAVE_FLTK], [test "x$enable_fltk" = "xyes"])
+m4trace:configure.ac:291: -1- m4_pattern_allow([^HAVE_FLTK_TRUE$])
+m4trace:configure.ac:291: -1- m4_pattern_allow([^HAVE_FLTK_FALSE$])
+m4trace:configure.ac:291: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_TRUE])
+m4trace:configure.ac:291: -1- _AM_SUBST_NOTMAKE([HAVE_FLTK_FALSE])
+m4trace:configure.ac:300: -1- m4_pattern_allow([^_NCURSES$])
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_stdio_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" stdio.h ]AS_TR_SH([stdio.h]) AS_TR_CPP([HAVE_stdio.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_stdlib_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_stdlib_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" stdlib.h ]AS_TR_SH([stdlib.h]) AS_TR_CPP([HAVE_stdlib.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_string_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_string_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" string.h ]AS_TR_SH([string.h]) AS_TR_CPP([HAVE_string.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_inttypes_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_inttypes_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" inttypes.h ]AS_TR_SH([inttypes.h]) AS_TR_CPP([HAVE_inttypes.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_stdint_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_stdint_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" stdint.h ]AS_TR_SH([stdint.h]) AS_TR_CPP([HAVE_stdint.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_strings_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_strings_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" strings.h ]AS_TR_SH([strings.h]) AS_TR_CPP([HAVE_strings.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_sys_stat_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_sys_stat_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" sys/stat.h ]AS_TR_SH([sys/stat.h]) AS_TR_CPP([HAVE_sys/stat.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_sys_types_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_sys_types_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" sys/types.h ]AS_TR_SH([sys/types.h]) AS_TR_CPP([HAVE_sys/types.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- AC_DEFUN([_AC_Header_unistd_h], [m4_divert_text([INIT_PREPARE],
+m4trace:configure.ac:300: -1- AC_DEFUN([_AC_Header_unistd_h], [m4_divert_text([INIT_PREPARE],
   [AS_VAR_APPEND([ac_header_]]_AC_LANG_ABBREV[[_list],
   [" unistd.h ]AS_TR_SH([unistd.h]) AS_TR_CPP([HAVE_unistd.h])["])])_AC_HEADERS_EXPANSION(_AC_LANG_ABBREV)])
-m4trace:configure.ac:276: -1- m4_pattern_allow([^STDC_HEADERS$])
-m4trace:configure.ac:276: -1- m4_pattern_allow([^HAVE_NCURSES_H$])
-m4trace:configure.ac:285: -1- AM_CONDITIONAL([HAVE_NCURSES], [test "x$enable_curses" = "xyes"])
-m4trace:configure.ac:285: -1- m4_pattern_allow([^HAVE_NCURSES_TRUE$])
-m4trace:configure.ac:285: -1- m4_pattern_allow([^HAVE_NCURSES_FALSE$])
-m4trace:configure.ac:285: -1- _AM_SUBST_NOTMAKE([HAVE_NCURSES_TRUE])
-m4trace:configure.ac:285: -1- _AM_SUBST_NOTMAKE([HAVE_NCURSES_FALSE])
-m4trace:configure.ac:289: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.ac:289: -1- m4_pattern_allow([^LTLIBOBJS$])
-m4trace:configure.ac:289: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
-m4trace:configure.ac:289: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
-m4trace:configure.ac:289: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
-m4trace:configure.ac:289: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
-m4trace:configure.ac:289: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
-m4trace:configure.ac:289: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS
-m4trace:configure.ac:289: -1- AM_RUN_LOG([cd "$am_dirpart" \
+m4trace:configure.ac:300: -1- m4_pattern_allow([^STDC_HEADERS$])
+m4trace:configure.ac:300: -1- m4_pattern_allow([^HAVE_NCURSES_H$])
+m4trace:configure.ac:309: -1- AM_CONDITIONAL([HAVE_NCURSES], [test "x$enable_curses" = "xyes"])
+m4trace:configure.ac:309: -1- m4_pattern_allow([^HAVE_NCURSES_TRUE$])
+m4trace:configure.ac:309: -1- m4_pattern_allow([^HAVE_NCURSES_FALSE$])
+m4trace:configure.ac:309: -1- _AM_SUBST_NOTMAKE([HAVE_NCURSES_TRUE])
+m4trace:configure.ac:309: -1- _AM_SUBST_NOTMAKE([HAVE_NCURSES_FALSE])
+m4trace:configure.ac:313: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:313: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.ac:313: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
+m4trace:configure.ac:313: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
+m4trace:configure.ac:313: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
+m4trace:configure.ac:313: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
+m4trace:configure.ac:313: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
+m4trace:configure.ac:313: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS
+m4trace:configure.ac:313: -1- AM_RUN_LOG([cd "$am_dirpart" \
       && sed -e '/# am--include-marker/d' "$am_filepart" \
         | $MAKE -f - am--depfiles])

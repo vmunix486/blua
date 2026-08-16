@@ -23,8 +23,9 @@
 
 #ifdef _RAYLIB
 #include "raylua.h"
-#include "linih.h"
 #endif
+
+#include "linih.h"
 
 #ifdef _FLTK
 #include "lfltk.h"

@@ -753,6 +753,7 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 enable_dependency_tracking
+enable_c89
 enable_ofast
 enable_lto
 with_cpu
@@ -1403,6 +1404,8 @@ Optional Features:
                           do not reject slow dependency extractors
   --disable-dependency-tracking 
                           speeds up one-time build
+  --enable-c89            compile with strict C89 (ANSI C) instead of C99
+                          @<:@default=no@:>@
   --enable-ofast          use -Ofast optimization @<:@default=auto@:>@
   --enable-lto            use link-time optimization @<:@default=auto@:>@
   --disable-raylib        disable raylib support
@@ -5549,7 +5552,33 @@ unknown)
 esac
 
 
-AX_CHECK_COMPILE_FLAG(-std=gnu99, CFLAGS="$CFLAGS -std=gnu99")
+@%:@ Check whether --enable-c89 was given.
+if test ${enable_c89+y}
+then :
+  enableval=$enable_c89; enable_c89=$enableval
+else case e in @%:@(
+  e) enable_c89=no ;;
+esac
+fi
+
+
+if test "x$enable_c89" = "xyes"; then
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: C89 mode is incompatible with POSIX; some Lua features may not work on Linux" >&5
+printf "%s\n" "$as_me: WARNING: C89 mode is incompatible with POSIX; some Lua features may not work on Linux" >&2;}
+  AX_CHECK_COMPILE_FLAG(-std=c89, 
+    CFLAGS="$CFLAGS -std=c89"
+    AC_DEFINE([LUA_USE_C89], [1], [Compile in strict C89 mode])
+  , 
+    AX_CHECK_COMPILE_FLAG([-ansi], [
+      CFLAGS="$CFLAGS -ansi"
+      AC_DEFINE([LUA_USE_C89], [1], [Compile in strict C89 mode])
+    ], [
+      AC_MSG_ERROR([C89/ANSI mode requested but compiler does not support -std=c89 or -ansi])
+    ])
+  )
+else
+  AX_CHECK_COMPILE_FLAG(-std=gnu99, CFLAGS="$CFLAGS -std=gnu99")
+fi
 
 : ${CFLAGS=""}
 CFLAGS=$(echo "$CFLAGS" | sed 's/-g//;s/-O0-9*//g;s/^ *//;s/ *$//')
@@ -7697,6 +7726,11 @@ fi
 echo ""
 echo "blua $PACKAGE_VERSION configuration summary:"
 echo "  C compiler:       $CC"
+if test "x$enable_c89" = "xyes"; then
+  echo "  C standard:       C89 (ANSI C) -- warning: incompatible with POSIX"
+else
+  echo "  C standard:       C99"
+fi
 echo "  CFLAGS:           $CFLAGS"
 echo "  LDFLAGS:          $LDFLAGS"
 echo "  LIBS:             $LIBS"
