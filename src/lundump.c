@@ -392,7 +392,8 @@ static void checkHeader (LoadState *S) {
 /*
 ** Load precompiled chunk.
 */
-LClosure *luaU_undump (lua_State *L, ZIO *Z, const char *name, int fixed) {
+LClosure *luaU_undump (lua_State *L, ZIO *Z, Table *anchor, const char *name,
+                       int fixed) {
   LoadState S;
   LClosure *cl;
   if (*name == '@' || *name == '=')
@@ -406,19 +407,15 @@ LClosure *luaU_undump (lua_State *L, ZIO *Z, const char *name, int fixed) {
   S.offset = 1;  /* fist byte was already read */
   checkHeader(&S);
   cl = luaF_newLclosure(L, loadByte(&S));
-  setclLvalue2s(L, L->top.p, cl);
-  luaD_inctop(L);
-  S.h = luaH_new(L);  /* create list of saved strings */
+  luaD_anchorobj(L, anchor, obj2gco(cl));
+  S.h = anchor;
   S.nstr = 0;
-  sethvalue2s(L, L->top.p, S.h);  /* anchor it */
-  luaD_inctop(L);
   cl->p = luaF_newproto(L);
   luaC_objbarrier(L, cl, cl->p);
   loadFunction(&S, cl->p);
   if (cl->nupvalues != cl->p->sizeupvalues)
     error(&S, "corrupted chunk");
   luai_verifycode(L, cl->p);
-  L->top.p--;  /* pop table */
   return cl;
 }
 
