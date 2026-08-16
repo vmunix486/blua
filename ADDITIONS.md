@@ -12,7 +12,7 @@ See https://fltk.org
 
 ## Curses
 
-¯\(ツ)/¯
+`¯\(ツ)/¯`
 
 ## inih
 
@@ -22,6 +22,6 @@ See https://github.com/benhoyt/inih
 
 | Function | Explaination | Code |
 | --- | --- | --- |
-| `ini.parse("FILE")` | Starts the parsing of the specified file in the argument. Has to be in double "" or single '' quotes. | ```lua
-local foo = ini.parse("bar.ini")
-```
+| `ini.parse("FILE")` | Starts the parsing of the specified file in the argument. Has to be in double `""` or single `''` quotes. | `local foo = ini.parse("bar.ini")` <br><br> `print(foo.baz)`|
+
+## More to be added
