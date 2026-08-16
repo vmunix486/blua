@@ -14,6 +14,7 @@
  end
  ```
  - Add switch statements. To make porting C programs to Lua easier.
+ - Add `range(N)`, like Python.
 
 ## To be added libraries
 
