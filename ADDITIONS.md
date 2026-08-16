@@ -14,6 +14,18 @@ See https://fltk.org
 
 `¯\(ツ)/¯`
 
+### Functions
+
+| Function/Variable | Explaination | Code |
+| --- | --- | --- |
+| `curses.initscr()` | Starts curses | `curses.initscr()` |
+| `curses.endwin()` | Ends curses | `curses.endwin()` |
+| `curses.erase()` | Clears the terminal | `curses.erase()` |
+| `curses.refresh()` | Draws everything to the terminal | `curses.refresh()` |
+| `curses.mvaddch(y, x, "X")` | Move the cursor to the specified location and add the given character | `curses.mvaddch(10, 100, "o")` |
+| `curses.mvaddstr(y, x, "string")` | Print the string at the specified location | `curses.mvaddstr(100, 50, "Foobar")` |
+| `curses.mvprintw(y, x, "formatted text", variables)` | Ncurses `printf` function. | `curses.mvprintw(69, 420, string.format("%d", foo))` |
+
 ## inih
 
 See https://github.com/benhoyt/inih
