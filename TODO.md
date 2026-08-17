@@ -1,11 +1,9 @@
 # TODO
 
- - Add all the functions from Raylib
  - Add a lot more functions from FLTK
  - Add lots of examples (port ones from raylib, add others for other libraries)
  - Fix Raylib crashing on some 3D stuff
  - Fix support on Windows
- - Add more functions from curses
  - Add library detection eg.
  ```lua
  if not blua.library("raylib") then
