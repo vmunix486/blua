@@ -1,7 +1,8 @@
--- Note: there is a bug where the character can clip out of bounds if it hits a corner exactly.
-
+-- vmunix note: This is good for making art. I think I'll make something like this with raylib
+-- and both random colors, random palettes (2-N), and also set palettes as well with INI parsing.
+-- as of writing, it's late and I'm tired so I'll do it Wednesday (8/19/26, today is 8/16)
 local char = string.byte("#") -- The character to use for the bouncer
-local frametime = 1/24 -- When the next frame is
+local frametime = 1/1000 -- When the next frame is
 
 local dx = 1 -- X velocity
 local dy = 1 -- Y velocity
@@ -37,8 +38,6 @@ if curses.has_colors() then -- If there are colors
 end
 
 while true do
-	curses.erase() -- Clear the screen for the frame
-
 	x = x + dx -- Move X
 	y = y + dy -- Move Y
 
