@@ -15,7 +15,7 @@ local height = LINES
 while true do
 	curses.erase()
 
-	for i = 1, 100 do
+	for i = 1, particles do
 		local x = math.random(0, width - 1)
 		local y = math.random(0, height - 1)
 		curses.move(y, x)
