@@ -8,7 +8,7 @@ Another good thing about BLua is that everything is compiled into the executable
 
  - Raylib
  - inih (INI parser) (read-only, want to add writing INI's)
- - FLTK (a few functions)
+ - FLTK (some basic things)
  - curses
 
 # Extra Commands

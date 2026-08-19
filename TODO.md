@@ -10,8 +10,7 @@
 	 os.exit(1)
  end
  ```
- - Add switch statements. To make porting C programs to Lua easier.
- - Add `range(N)`, like Python.
+ - Add switch-case statements like in C.
  - Add some networking stuff (`net.httpget(url)`, `net.httpsget(url)`, `net.ping(url)`, `net.ftpget(url)`, etc. etc. All the things that get stuff from url's will output it, so you can set it to a variable. `net.listenhttp(PORT)`, etc. etc. if you need something like a web server but don't need the entirety of a webserver.)
 
 ## To be added libraries
