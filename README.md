@@ -4,6 +4,8 @@ A better version of Lua that I made for myself. The only thing that's different 
 
 Another good thing about BLua is that everything is compiled into the executable itself, and not as a Lua module that for whatever reason needs CMake to compile. (looking at you, FLTK modules...)
 
+Documentation for all the functions added is in ADDITIONS.md.
+
 # Libraries
 
  - Raylib
@@ -11,6 +13,3 @@ Another good thing about BLua is that everything is compiled into the executable
  - FLTK (some basic things)
  - curses
 
-# Extra Commands
-
- - `blua.sleep(N)` - Does what it looks like it does. `N` is any number, such as an integer or a float.
