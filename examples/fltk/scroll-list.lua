@@ -4,7 +4,7 @@ local names = { -- Some of my favorite Touhou characters
 	"Aunn Komano",
 	"Rumia",
 	"Hong Meiling",
-	"Aya Shameimaru",
+	"Rinnosuke Morichika",
 	"Fujiwara no Mokou",
 	"Suika Ibuki",
 	"Kogasa Tatara",
